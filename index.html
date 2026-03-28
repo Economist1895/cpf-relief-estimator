@@ -16,162 +16,135 @@
     --radius: 14px; --shadow: 0 1px 3px rgba(0,0,0,0.07), 0 8px 24px rgba(0,0,0,0.05);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'IBM Plex Sans', -apple-system, sans-serif; background: #f1f5f9; min-height: 100vh; padding: 28px 16px 56px; color: var(--text); line-height: 1.6; }
+  body { font-family: 'IBM Plex Sans', -apple-system, sans-serif; background: #f1f5f9; min-height: 100vh; padding: 20px 16px 56px; color: var(--text); line-height: 1.6; }
 
-  /* ── Header ── */
-  .page-header { max-width: 680px; margin: 0 auto 28px; display: flex; align-items: center; gap: 16px; }
-  .page-header .iras-logo { height: 64px; width: auto; flex-shrink: 0; }
-  .page-header-divider { width: 1.5px; height: 44px; background: var(--border); flex-shrink: 0; }
-  .page-header-text { display: flex; flex-direction: column; gap: 3px; }
-  .page-header-text .sup { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
-  .page-header-text h1 { font-size: 1.25rem; font-weight: 700; color: var(--ink); letter-spacing: -0.3px; line-height: 1.2; }
-  .beta-badge { display: inline-block; background: #dbeafe; color: #1d4ed8; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 8px; border-radius: 100px; vertical-align: middle; margin-left: 6px; border: 1px solid #bfdbfe; }
+  .page-header { max-width: 680px; margin: 0 auto 20px; display: flex; align-items: center; gap: 16px; }
+  .page-header .iras-logo { height: 56px; width: auto; flex-shrink: 0; }
+  .page-header-divider { width: 1.5px; height: 40px; background: var(--border); flex-shrink: 0; }
+  .page-header-text { display: flex; flex-direction: column; gap: 2px; }
+  .page-header-text .sup { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+  .page-header-text h1 { font-size: 1.15rem; font-weight: 700; color: var(--ink); letter-spacing: -0.3px; line-height: 1.2; }
+  .beta-badge { display: inline-block; background: #dbeafe; color: #1d4ed8; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 7px; border-radius: 100px; vertical-align: middle; margin-left: 5px; border: 1px solid #bfdbfe; }
 
-  /* ── Tab nav ── */
-  .tab-nav { max-width: 680px; margin: 0 auto 20px; display: flex; background: white; border-radius: 12px; padding: 5px; box-shadow: var(--shadow); border: 1px solid var(--border); gap: 4px; }
-  .tab-btn { flex: 1; padding: 10px 8px; border: none; background: transparent; border-radius: 8px; font-family: 'IBM Plex Sans', sans-serif; font-size: 0.82rem; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px; }
+  .tab-nav { max-width: 680px; margin: 0 auto 16px; display: flex; background: white; border-radius: 12px; padding: 4px; box-shadow: var(--shadow); border: 1px solid var(--border); gap: 4px; }
+  .tab-btn { flex: 1; padding: 10px 8px; border: none; background: transparent; border-radius: 8px; font-family: 'IBM Plex Sans', sans-serif; font-size: 0.85rem; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px; }
   .tab-btn:hover { background: var(--surface-2); color: var(--ink); }
   .tab-btn.active { background: var(--primary); color: white; box-shadow: 0 2px 8px rgba(37,99,235,0.3); }
   .reset-btn { padding: 8px 12px; border: 1.5px solid var(--border); background: transparent; border-radius: 8px; font-family: 'IBM Plex Sans', sans-serif; font-size: 0.78rem; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: all 0.2s; white-space: nowrap; flex-shrink: 0; }
   .reset-btn:hover { border-color: var(--error); color: var(--error); background: #fff5f5; }
 
-  /* ── Pages ── */
   .page { display: none; }
   .page.active { display: block; }
-  .container { max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+  .container { max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
 
-  /* ── Cards ── */
-  .card { background: var(--surface); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); border: 1px solid var(--border); }
-  .card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
-  .card-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+  .card { background: var(--surface); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .card-icon { width: 32px; height: 32px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
   .card-icon.blue { background: #dbeafe; } .card-icon.green { background: #d1fae5; }
-  .card-icon.purple { background: #ede9fe; } .card-icon.amber { background: #fef3c7; }
-  .card-icon.rose { background: #ffe4e6; } .card-icon.white { background: rgba(255,255,255,0.15); }
+  .card-icon.amber { background: #fef3c7; }
   .card-icon.teal { background: #ccfbf1; }
-  .card-header h2 { font-size: 1.05rem; font-weight: 700; color: var(--ink); }
+  .card-header h2 { font-size: 1rem; font-weight: 700; color: var(--ink); }
 
-  /* ── Form elements ── */
   .form-group { margin-bottom: 14px; }
   .form-group:last-child { margin-bottom: 0; }
-  label.field-label { display: block; color: var(--text-muted); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 6px; }
+  label.field-label { display: block; color: var(--text-muted); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 5px; }
   .input-wrap { position: relative; }
   .input-wrap .prefix { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-weight: 600; pointer-events: none; font-size: 0.95rem; }
-  input[type="number"], select { width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 10px; font-size: 1rem; font-family: 'IBM Plex Sans', sans-serif; font-weight: 500; color: var(--ink); background: var(--surface); transition: border-color 0.2s, box-shadow 0.2s; -webkit-appearance: none; -moz-appearance: textfield; appearance: textfield; }
+  input[type="number"], select { width: 100%; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: 10px; font-size: 1rem; font-family: 'IBM Plex Sans', sans-serif; font-weight: 500; color: var(--ink); background: var(--surface); transition: border-color 0.2s, box-shadow 0.2s; -webkit-appearance: none; -moz-appearance: textfield; appearance: textfield; }
   input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
   .input-wrap input[type="number"] { padding-left: 28px; }
   input[type="number"]:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,0.12); }
-  .field-hint { font-size: 0.78rem; color: var(--text-muted); margin-top: 5px; line-height: 1.5; }
-  .divider { height: 1px; background: var(--border); margin: 16px 0; }
+  .field-hint { font-size: 0.76rem; color: var(--text-muted); margin-top: 4px; line-height: 1.5; }
+  .divider { height: 1px; background: var(--border); margin: 14px 0; }
   .hidden { display: none !important; }
 
-  /* ── Worker type selector ── */
-  .worker-type-grid { display: flex; flex-direction: column; gap: 8px; }
-  .worker-card { border: 1.5px solid var(--border); border-radius: 12px; padding: 12px 16px; cursor: pointer; transition: all 0.15s; display: flex; align-items: center; gap: 14px; }
+  .worker-type-grid { display: flex; flex-direction: column; gap: 6px; }
+  .worker-card { border: 1.5px solid var(--border); border-radius: 10px; padding: 10px 14px; cursor: pointer; transition: all 0.15s; display: flex; align-items: center; gap: 12px; }
   .worker-card:hover { border-color: var(--primary); background: #f0f7ff; }
   .worker-card.selected { border-color: var(--primary); background: #eff6ff; }
   .worker-card input[type="checkbox"] { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--primary); cursor: pointer; }
-  .worker-card-icon { font-size: 1.3rem; flex-shrink: 0; }
+  .worker-card-icon { font-size: 1.2rem; flex-shrink: 0; }
   .worker-card-text { flex: 1; display: flex; align-items: baseline; gap: 10px; }
-  .worker-card-text .wc-title { font-weight: 700; font-size: 0.93rem; color: var(--ink); }
-  .worker-card-text .wc-sub { font-size: 0.78rem; color: var(--text-muted); line-height: 1.4; }
+  .worker-card-text .wc-title { font-weight: 700; font-size: 0.9rem; color: var(--ink); }
+  .worker-card-text .wc-sub { font-size: 0.76rem; color: var(--text-muted); line-height: 1.4; }
 
-  /* ── Toggle ── */
-  .toggle-row { display: flex; align-items: center; gap: 12px; padding: 8px 0; }
-  .toggle-row .toggle-label { font-size: 0.9rem; color: var(--text); font-weight: 500; }
-  .toggle { position: relative; width: 48px; height: 26px; flex-shrink: 0; cursor: pointer; }
+  .toggle-row { display: flex; align-items: center; gap: 12px; padding: 6px 0; }
+  .toggle-row .toggle-label { font-size: 0.86rem; color: var(--text); font-weight: 500; }
+  .toggle { position: relative; width: 44px; height: 24px; flex-shrink: 0; cursor: pointer; }
   .toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
   .toggle-track { position: absolute; inset: 0; background: var(--border); border-radius: 100px; transition: background 0.25s; }
-  .toggle-thumb { position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; background: white; border-radius: 50%; box-shadow: 0 1px 4px rgba(0,0,0,0.25); transition: transform 0.25s; }
+  .toggle-thumb { position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; background: white; border-radius: 50%; box-shadow: 0 1px 4px rgba(0,0,0,0.25); transition: transform 0.25s; }
   .toggle input:checked ~ .toggle-track { background: var(--primary); }
-  .toggle input:checked ~ .toggle-thumb { transform: translateX(22px); }
+  .toggle input:checked ~ .toggle-thumb { transform: translateX(20px); }
 
-  /* ── Info/warning boxes ── */
-  .info-box, .warning-box, .note-box, .success-box { display: flex; gap: 10px; align-items: flex-start; border-radius: 10px; padding: 12px 14px; font-size: 0.83rem; line-height: 1.55; margin-bottom: 14px; }
+  .info-box, .warning-box, .note-box { display: flex; gap: 10px; align-items: flex-start; border-radius: 10px; padding: 10px 12px; font-size: 0.8rem; line-height: 1.55; margin-bottom: 12px; }
   .info-box { background: var(--primary-light); color: #1e40af; }
   .warning-box { background: var(--warning-bg); border: 1px solid var(--warning-border); color: var(--warning-text); }
   .note-box { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
-  .success-box { background: var(--success-light); border: 1px solid #86efac; color: #15803d; }
-  .info-box .icon, .warning-box .icon, .note-box .icon, .success-box .icon { flex-shrink: 0; }
+  .info-box .icon, .warning-box .icon, .note-box .icon { flex-shrink: 0; }
   .info-box:last-child, .warning-box:last-child, .note-box:last-child { margin-bottom: 0; }
 
-  /* ── Sub-section ── */
-  .sub-section { background: var(--surface-2); border-radius: 10px; padding: 16px; margin-top: 10px; border: 1px solid var(--border); }
+  .sub-section { background: var(--surface-2); border-radius: 10px; padding: 14px; margin-top: 8px; border: 1px solid var(--border); }
 
-  /* ── Cap progress bar ── */
-  .cap-card { background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%); border-radius: 12px; padding: 16px 20px; margin-bottom: 12px; }
-  .cap-card-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
-  .cap-card-label { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255,255,255,0.6); }
-  .cap-card-value { font-size: 1.4rem; font-weight: 700; color: white; letter-spacing: -0.5px; }
-  .cap-bar-bg { height: 8px; background: rgba(255,255,255,0.2); border-radius: 100px; overflow: hidden; margin-bottom: 8px; }
-  .cap-bar-fill { height: 100%; border-radius: 100px; background: white; transition: width 0.3s ease; }
-  .cap-bar-fill.over { background: #fca5a5; }
-  .cap-bar-footer { display: flex; justify-content: space-between; align-items: center; }
-  .cap-bar-pct { font-size: 0.8rem; font-weight: 700; color: rgba(255,255,255,0.75); }
-  .cap-bar-remaining { font-size: 0.78rem; color: rgba(255,255,255,0.55); }
 
-  /* ── Input mode toggle ── */
-  .input-mode-toggle { display: flex; border: 1.5px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 14px; }
-  .input-mode-btn { flex: 1; padding: 8px 12px; border: none; background: var(--surface-2); font-family: 'IBM Plex Sans', sans-serif; font-size: 0.82rem; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: all 0.15s; }
+  .input-mode-toggle { display: flex; border: 1.5px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 12px; }
+  .input-mode-btn { flex: 1; padding: 8px 10px; border: none; background: var(--surface-2); font-family: 'IBM Plex Sans', sans-serif; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: all 0.15s; }
   .input-mode-btn + .input-mode-btn { border-left: 1.5px solid var(--border); }
   .input-mode-btn.active { background: var(--primary); color: white; }
   .input-mode-btn:hover:not(.active) { background: #e8f0fe; color: var(--primary); }
 
-  /* ── Result rows ── */
-  .result-row { display: flex; justify-content: space-between; align-items: baseline; padding: 8px 0; }
+  .result-row { display: flex; justify-content: space-between; align-items: baseline; padding: 7px 0; }
   .result-row + .result-row { border-top: 1px dashed var(--border); }
-  .result-label { color: var(--text-muted); font-size: 0.88rem; }
-  .result-label.strong { color: var(--ink); font-weight: 700; font-size: 0.93rem; }
-  .result-value { font-weight: 600; font-size: 0.97rem; color: var(--ink); }
-  .result-value.strong { font-size: 1.08rem; font-weight: 700; color: var(--primary); }
+  .result-label { color: var(--text-muted); font-size: 0.85rem; }
+  .result-label.strong { color: var(--ink); font-weight: 700; font-size: 0.9rem; }
+  .result-value { font-weight: 600; font-size: 0.95rem; color: var(--ink); }
+  .result-value.strong { font-size: 1.05rem; font-weight: 700; color: var(--primary); }
 
-  /* ── Summary card (dark) ── */
-  .summary-card { background: linear-gradient(145deg, #1e2a3a 0%, #252f3e 55%, #1a2332 100%); color: white; border-radius: var(--radius); padding: 24px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); border: none; }
-  .summary-card .card-header { border-bottom-color: rgba(255,255,255,0.1); }
-  .summary-card .card-header h2 { color: white; }
-  .summary-card .result-label { color: rgba(255,255,255,0.5); }
-  .summary-card .result-label.strong { color: rgba(255,255,255,0.88); }
-  .summary-card .result-value { color: rgba(255,255,255,0.78); }
-  .summary-card .result-value.strong { color: #93c5fd; }
-  .summary-card .result-row + .result-row { border-top-color: rgba(255,255,255,0.07); }
-  .summary-card .divider { background: rgba(255,255,255,0.1); }
-  .relief-highlight { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.14); border-radius: 12px; padding: 20px 24px; margin-top: 20px; }
+  .summary-card { background: var(--surface); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); border: 1px solid var(--border); }
+  .relief-highlight { background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 1px solid #bfdbfe; border-radius: 12px; padding: 18px 22px; margin-top: 16px; }
   .relief-highlight-main { display: flex; justify-content: space-between; align-items: center; }
-  .relief-highlight .lbl { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: rgba(255,255,255,0.55); }
-  .relief-highlight .amt { font-size: 2.1rem; font-weight: 700; letter-spacing: -1px; color: #93c5fd; }
-  .relief-sub-row { margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: baseline; }
-  .relief-sub-row .sub-lbl { font-size: 0.75rem; color: rgba(255,255,255,0.4); }
-  .relief-sub-row .sub-amt { font-size: 0.95rem; font-weight: 700; color: rgba(147,197,253,0.75); }
-  .disclaimer { background: rgba(0,0,0,0.18); border-radius: 10px; padding: 12px 14px; font-size: 0.79rem; color: rgba(255,255,255,0.5); margin-top: 14px; line-height: 1.5; }
+  .relief-highlight .lbl { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-muted); }
+  .relief-highlight .amt { font-size: 1.9rem; font-weight: 700; letter-spacing: -1px; color: var(--primary); }
+  .cap-note { margin-top: 12px; padding-top: 10px; border-top: 1px solid #bfdbfe; font-size: 0.8rem; color: var(--text-muted); line-height: 1.55; }
+  .cap-note .cap-over { color: var(--error); font-weight: 600; }
 
-  /* ── Step-by-step breakdown ── */
   .steps-container { display: flex; flex-direction: column; gap: 0; }
-  .step { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .step { border-bottom: 1px solid var(--border); }
   .step:last-child { border-bottom: none; }
-  .step-num { width: 28px; height: 28px; border-radius: 50%; background: var(--primary-light); color: var(--primary); font-size: 0.8rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
-  .step-body { flex: 1; }
-  .step-title { font-weight: 700; font-size: 0.93rem; color: var(--ink); margin-bottom: 4px; }
-  .step-desc { font-size: 0.83rem; color: var(--text-muted); line-height: 1.55; }
-  .step-calc { font-size: 0.82rem; background: var(--surface-2); border-radius: 8px; padding: 8px 12px; margin-top: 8px; color: var(--ink); border: 1px solid var(--border); white-space: pre-wrap; word-break: break-word; }
-  .step-result { font-weight: 700; color: var(--primary); margin-top: 6px; font-size: 0.88rem; }
-  .step-warn { background: var(--warning-bg); border: 1px solid var(--warning-border); color: var(--warning-text); border-radius: 8px; padding: 8px 12px; margin-top: 8px; font-size: 0.8rem; }
+  .step-header { display: flex; gap: 12px; padding: 12px 0; cursor: pointer; align-items: flex-start; user-select: none; }
+  .step-header:hover { opacity: 0.85; }
+  .step-num { width: 26px; height: 26px; border-radius: 50%; background: var(--primary-light); color: var(--primary); font-size: 0.75rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .step-summary { flex: 1; min-width: 0; }
+  .step-title { font-weight: 700; font-size: 0.88rem; color: var(--ink); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .step-result-inline { font-weight: 700; color: var(--primary); font-size: 0.84rem; margin-top: 2px; }
+  .step-chevron { flex-shrink: 0; width: 20px; height: 20px; color: var(--text-muted); transition: transform 0.2s; margin-top: 3px; display: flex; align-items: center; justify-content: center; }
+  .step.open .step-chevron { transform: rotate(180deg); }
+  .step-detail { display: none; padding: 0 0 14px 38px; }
+  .step.open .step-detail { display: block; }
+  .step-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.55; margin-bottom: 8px; }
+  .step-calc { font-size: 0.8rem; background: var(--surface-2); border-radius: 8px; padding: 10px 12px; color: var(--ink); border: 1px solid var(--border); white-space: pre-wrap; word-break: break-word; line-height: 1.65; }
+  .step-warn { background: var(--warning-bg); border: 1px solid var(--warning-border); color: var(--warning-text); border-radius: 8px; padding: 8px 12px; margin-top: 8px; font-size: 0.78rem; }
 
-  /* ── Summary paragraph ── */
-  .summary-para { background: var(--surface-2); border-radius: 12px; padding: 16px 18px; font-size: 0.88rem; line-height: 1.7; color: var(--text); border: 1px solid var(--border); margin-top: 4px; }
+  .pill { display: inline-block; font-size: 0.65rem; font-weight: 700; padding: 2px 8px; border-radius: 100px; letter-spacing: 0.03em; vertical-align: middle; }
+  .pill-cap { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+  .pill-ok { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+  .pill-warn { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
 
-  /* ── CTA button ── */
-  .cta-card { text-align: center; padding: 20px; }
-  .cta-card p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 12px; }
+  .computed-display { background: var(--surface-2); border: 1.5px solid var(--border); border-radius: 10px; padding: 10px 14px; font-size: 0.95rem; font-weight: 600; color: var(--primary); }
+  .computed-row { display: flex; justify-content: space-between; align-items: center; }
+  .computed-lbl { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; }
+
+  .cta-card { text-align: center; padding: 18px; }
+  .cta-card p { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 10px; }
   .btn-primary { background: var(--primary); color: white; border: none; border-radius: 10px; padding: 12px 28px; font-family: 'IBM Plex Sans', sans-serif; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: background 0.15s; }
   .btn-primary:hover { background: #1d4ed8; }
 
-  /* ── Computed display ── */
-  .computed-display { background: var(--surface-2); border: 1.5px solid var(--border); border-radius: 10px; padding: 11px 14px; font-size: 0.95rem; font-weight: 600; color: var(--primary); }
-  .computed-row { display: flex; justify-content: space-between; align-items: center; }
-  .computed-lbl { font-size: 0.82rem; color: var(--text-muted); font-weight: 500; }
-
   @media (max-width: 480px) {
-    .relief-highlight .amt { font-size: 1.65rem; }
-    .card { padding: 18px; }
+    body { padding: 14px 10px 48px; }
+    .relief-highlight .amt { font-size: 1.5rem; }
+    .card { padding: 16px; }
+    .page-header { gap: 12px; }
+    .page-header .iras-logo { height: 48px; }
   }
 </style>
 </head>
@@ -187,146 +160,138 @@
 </div>
 
 <div class="tab-nav">
-  <button class="tab-btn active" id="tab-profile"><span>Profile &amp; Income</span></button>
-  <button class="tab-btn" id="tab-voluntary"><span>Voluntary &amp; Top-ups</span></button>
+  <button class="tab-btn active" id="tab-inputs"><span>Your Details</span></button>
   <button class="tab-btn" id="tab-result"><span>Results</span></button>
   <button class="reset-btn" id="btnReset" title="Reset all fields">↺ Reset</button>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════ PAGE 1: PROFILE -->
-<div class="page active" id="page-profile"><div class="container">
+<!-- ═══════════════════════════════════════════════════ PAGE 1: ALL INPUTS -->
+<div class="page active" id="page-inputs"><div class="container">
 
   <!-- Worker Type + Basic Info -->
   <div class="card">
     <div class="card-header"><div class="card-icon blue">👤</div><h2>About You</h2></div>
-    <div class="info-box"><span class="icon">ℹ️</span><span>Select all income types that apply to you. You can tick more than one.</span></div>
+    <div class="info-box"><span class="icon">ℹ️</span><span>Select all income types that apply. You can tick more than one.</span></div>
     <div class="worker-type-grid">
       <label class="worker-card selected" id="wc-employee">
         <input type="checkbox" name="workerType" value="employee" checked>
         <span class="worker-card-icon">🏢</span>
-        <div class="worker-card-text"><div class="wc-title">Employee</div><div class="wc-sub">Salaried job with monthly CPF deductions</div></div>
+        <div class="worker-card-text"><div class="wc-title">Employee</div><div class="wc-sub">Salaried with monthly CPF</div></div>
       </label>
       <label class="worker-card" id="wc-sep">
         <input type="checkbox" name="workerType" value="sep">
         <span class="worker-card-icon">💼</span>
-        <div class="worker-card-text"><div class="wc-title">Self-Employed (SEP)</div><div class="wc-sub">Freelance, sole proprietor, consultant, etc.</div></div>
+        <div class="worker-card-text"><div class="wc-title">Self-Employed (SEP)</div><div class="wc-sub">Freelance, sole proprietor</div></div>
       </label>
       <label class="worker-card" id="wc-pw">
         <input type="checkbox" name="workerType" value="pw">
         <span class="worker-card-icon">🛵</span>
-        <div class="worker-card-text"><div class="wc-title">Platform Worker</div><div class="wc-sub">Grab, delivery, ride-hail platforms</div></div>
+        <div class="worker-card-text"><div class="wc-title">Platform Worker</div><div class="wc-sub">Grab, delivery, ride-hail</div></div>
       </label>
     </div>
-    <div class="warning-box hidden" id="noTypeWarning" style="margin-top:12px;margin-bottom:0;">
+    <div class="warning-box hidden" id="noTypeWarning" style="margin-top:10px;margin-bottom:0;">
       <span class="icon">⚠️</span><span>Please select at least one income type.</span>
     </div>
     <div class="divider"></div>
     <div class="form-group">
       <label class="field-label">Age as at 31 December 2025</label>
       <input type="number" id="age" placeholder="e.g. 35" min="16" max="100" step="1">
-      <div class="field-hint">Your age determines your CPF contribution rate and, if self-employed, your MediSave contribution rate.</div>
+      <div class="field-hint">Determines your CPF/MediSave contribution rate. Note: SEP MediSave rates officially use age as at 1 January — for most people this is the same, but if your birthday falls during the year, there may be a minor difference.</div>
     </div>
     <div class="form-group" style="margin-bottom:0;">
       <label class="field-label">Citizenship Status</label>
       <div class="input-mode-toggle" style="margin-bottom:0;">
-        <button class="input-mode-btn active" id="btnSC">Singapore Citizen (SC)</button>
-        <button class="input-mode-btn" id="btnPR">Permanent Resident (PR)</button>
+        <button class="input-mode-btn active" id="btnSC">Singapore Citizen</button>
+        <button class="input-mode-btn" id="btnPR">Permanent Resident</button>
       </div>
-      <div class="field-hint" id="prNote" style="display:none;">⚠️ First- and second-year PRs have reduced CPF rates. This tool uses 3rd-year-onwards rates. Please verify with CPF Board if you became a PR in 2023 or 2024.</div>
+      <div class="field-hint" id="prNote" style="display:none;">⚠️ First- and second-year PRs have reduced CPF rates. This tool uses 3rd-year-onwards rates. Verify with CPF Board if you became a PR in 2023 or 2024.</div>
     </div>
   </div>
 
   <!-- EMPLOYEE section -->
   <div class="card" id="sec-employee">
-    <div class="card-header"><div class="card-icon blue">🏢</div><h2>Employment Income &amp; CPF</h2></div>
-    <div class="info-box"><span class="icon">ℹ️</span><span>CPF Relief is based on your compulsory <strong>employee share</strong> of CPF contributions on ordinary and additional wages, subject to the CPF Annual Limit of <strong>$37,740</strong>. The Ordinary Wage (OW) ceiling for 2025 is <strong>$7,400/month</strong>.</span></div>
+    <div class="card-header"><div class="card-icon blue">🏢</div><h2>Employment Income & CPF</h2></div>
+    <div class="info-box"><span class="icon">ℹ️</span><span>Relief is based on your compulsory <strong>employee share</strong> of CPF. OW ceiling: <strong>$7,400/month</strong> (2025).</span></div>
     <div class="form-group">
       <label class="field-label">Monthly Ordinary Wage (OW)</label>
       <div class="input-wrap"><span class="prefix">$</span><input type="number" id="empOW" placeholder="0.00" min="0" step="0.01"></div>
-      <div class="field-hint">Your fixed monthly salary including allowances. Capped at $7,400 for CPF purposes.</div>
+      <div class="field-hint">Fixed monthly salary including allowances. Capped at $7,400 for CPF.</div>
     </div>
     <div class="form-group">
       <label class="field-label">Annual Additional Wages (AW)</label>
       <div class="input-wrap"><span class="prefix">$</span><input type="number" id="empAW" placeholder="0.00" min="0" step="0.01"></div>
-      <div class="field-hint">Annual bonus, commission, leave pay, and other non-monthly wage supplements. Subject to the Additional Wage ceiling of $102,000 minus total ordinary wages subject to CPF for the year.</div>
+      <div class="field-hint">Bonus, commission, leave pay. AW ceiling = $102,000 minus annual OW subject to CPF.</div>
     </div>
     <div class="warning-box hidden" id="multiEmpNote">
       <span class="icon">⚠️</span>
-      <div>If you have <strong>multiple employers</strong>, each applies the OW ceiling separately — your total CPF deductions may exceed what this calculator shows. You may enter your <strong>total actual CPF deducted</strong> in the field below as an override.
-        <div class="form-group" style="margin-top:10px;margin-bottom:0;">
-          <label class="field-label" style="font-size:0.75rem;">Override: Total Actual Employee CPF Deducted (optional)</label>
+      <div>If you have <strong>multiple employers</strong>, each applies the OW ceiling separately. You may enter your <strong>total actual CPF deducted</strong> below.
+        <div class="form-group" style="margin-top:8px;margin-bottom:0;">
+          <label class="field-label" style="font-size:0.72rem;">Override: Total Employee CPF Deducted (optional)</label>
           <div class="input-wrap"><span class="prefix">$</span><input type="number" id="empOverrideCPF" placeholder="Leave blank to use computed amount" min="0" step="0.01"></div>
         </div>
       </div>
     </div>
     <div class="divider"></div>
     <div class="computed-row">
-      <span class="computed-lbl">Computed Employee CPF Contribution</span>
+      <span class="computed-lbl">Computed Employee CPF</span>
       <span class="computed-display" id="empCPFDisplay">$0.00</span>
     </div>
-    <div class="field-hint" style="margin-top:6px;">Based on your age, OW, and AW. This reflects your <em>employee share</em> only — the employer's share cannot be claimed as a relief.</div>
   </div>
 
   <!-- SEP section -->
   <div class="card hidden" id="sec-sep">
     <div class="card-header"><div class="card-icon amber">💼</div><h2>Self-Employment Income</h2></div>
-    <div class="info-box"><span class="icon">ℹ️</span><span>As a SEP, your compulsory MediSave contributions are based on your <strong>Net Trade Income (NTI)</strong> and age. From <strong>YA 2026</strong>, the full amount of compulsory MediSave contributions qualifies for tax relief with no cap — a change from prior years.</span></div>
+    <div class="info-box"><span class="icon">ℹ️</span><span>Compulsory MediSave is based on NTI and age. From <strong>YA 2026</strong>, the full amount qualifies for tax relief.</span></div>
     <div class="form-group">
       <label class="field-label">Net Trade Income (NTI) for 2025</label>
       <div class="input-wrap"><span class="prefix">$</span><input type="number" id="sepNTI" placeholder="0.00" min="0" step="0.01"></div>
-      <div class="field-hint">Gross trade income minus allowable business expenses, capital allowances, and trade losses. If NTI ≤ $6,000, no compulsory MediSave is payable.</div>
+      <div class="field-hint">Gross trade income minus business expenses. No compulsory MediSave if NTI ≤ $6,000.</div>
     </div>
     <div class="toggle-row">
       <label class="toggle" for="sepPensioner"><input type="checkbox" id="sepPensioner"><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
-      <span class="toggle-label">I am a pensioner (receiving a government pension)</span>
+      <span class="toggle-label">I receive a government pension</span>
     </div>
-    <div class="field-hint" style="margin-top:4px;">Pensioners have a lower MediSave contribution rate cap of 6% (max $5,328).</div>
+    <div class="field-hint">Pensioners have a lower MediSave rate cap of 6% (max $5,328) for NTI above $18,000.</div>
     <div class="divider"></div>
     <div class="computed-row">
-      <span class="computed-lbl">Compulsory MediSave Payable</span>
+      <span class="computed-lbl">Compulsory MediSave</span>
       <span class="computed-display" id="sepMADisplay">$0.00</span>
     </div>
-    <div class="field-hint" style="margin-top:6px;">From YA 2026, the full amount of compulsory MediSave contributions qualifies for tax relief with no upper cap.</div>
   </div>
 
   <!-- PLATFORM WORKER section -->
   <div class="card hidden" id="sec-pw">
-    <div class="card-header"><div class="card-icon teal">🛵</div><h2>Platform Worker Income &amp; CPF</h2></div>
+    <div class="card-header"><div class="card-icon teal">🛵</div><h2>Platform Worker Income & CPF</h2></div>
     <div class="form-group">
       <label class="field-label">Year of Birth</label>
       <div class="input-mode-toggle" style="margin-bottom:0;">
-        <button class="input-mode-btn active" id="btnPW1995">Born on/after 1 Jan 1995 (mandatory)</button>
+        <button class="input-mode-btn active" id="btnPW1995">Born on/after 1 Jan 1995</button>
         <button class="input-mode-btn" id="btnPWPre1995">Born before 1995</button>
       </div>
     </div>
-    <div id="pwOptInSection" class="hidden" style="margin-top:10px;">
+    <div id="pwOptInSection" class="hidden" style="margin-top:8px;">
       <div class="toggle-row">
         <label class="toggle" for="pwOptIn"><input type="checkbox" id="pwOptIn"><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
-        <span class="toggle-label">I have opted in to increased CPF contributions (OA + SA + MA)</span>
+        <span class="toggle-label">I opted in to increased CPF (OA + SA + MA)</span>
       </div>
-      <div class="field-hint" style="margin-top:4px;">If not opted in, only MediSave contributions apply (same as SEP rates).</div>
+      <div class="field-hint">If not opted in, only MediSave contributions apply.</div>
     </div>
     <div class="divider"></div>
-
-    <!-- Opted-in / mandatory PW inputs -->
     <div id="pwOptedInSection">
-      <div class="info-box"><span class="icon">ℹ️</span><span>Your platform operator deducts CPF contributions from your earnings as you earn. Tax relief is granted on your <strong>worker share</strong> only — the platform operator's contributions are not taxable income to you and do not attract further relief. Net earnings = gross platform earnings minus the Fixed Expense Deduction Amount (FEDA).</span></div>
+      <div class="info-box"><span class="icon">ℹ️</span><span>Relief is on your <strong>worker share</strong> only — platform operator contributions are not taxable.</span></div>
       <div class="form-group">
         <label class="field-label">Annual Net Platform Earnings (after FEDA)</label>
         <div class="input-wrap"><span class="prefix">$</span><input type="number" id="pwNetEarnings" placeholder="0.00" min="0" step="0.01"></div>
-        <div class="field-hint">Check your platform operator's earnings statement. FEDA is typically deducted before CPF is calculated. Capped at $102,000 per platform operator for CPF purposes.</div>
+        <div class="field-hint">Capped at $102,000 per platform operator for CPF.</div>
       </div>
       <div class="divider"></div>
       <div class="computed-row">
-        <span class="computed-lbl">Worker Share CPF (2025 phased rate)</span>
+        <span class="computed-lbl">Worker Share CPF (2025 rate)</span>
         <span class="computed-display" id="pwCPFDisplay">$0.00</span>
       </div>
-      <div class="field-hint" style="margin-top:6px;">Computed from the 2025 transition rate table based on your age. Only your worker share qualifies for CPF Relief.</div>
     </div>
-
-    <!-- Non-opted-in PW (MediSave only) -->
     <div id="pwNotOptedSection" class="hidden">
-      <div class="info-box"><span class="icon">ℹ️</span><span>Platform workers born before 1995 who have not opted in contribute to MediSave only. The MediSave amount is computed on net platform earnings using the same rates that apply to self-employed persons.</span></div>
+      <div class="info-box"><span class="icon">ℹ️</span><span>Non-opted-in PWs contribute MediSave only, at SEP rates.</span></div>
       <div class="form-group">
         <label class="field-label">Annual Net Platform Earnings (after FEDA)</label>
         <div class="input-wrap"><span class="prefix">$</span><input type="number" id="pwMANetEarnings" placeholder="0.00" min="0" step="0.01"></div>
@@ -339,129 +304,83 @@
     </div>
   </div>
 
-  <!-- Employee + SEP note about NTI excluding PW income -->
   <div class="card hidden" id="sec-pw-sep-note">
-    <div class="warning-box" style="margin-bottom:0;"><span class="icon">⚠️</span><span>From 2025, CPF Board excludes net platform earnings from the NTI used to compute SEP MediSave contributions. Enter only your <strong>non-platform</strong> trade income in the Self-Employment section above.</span></div>
+    <div class="warning-box" style="margin-bottom:0;"><span class="icon">⚠️</span><span>From 2025, CPF Board excludes net platform earnings from SEP NTI. Enter only <strong>non-platform</strong> trade income above.</span></div>
   </div>
 
-  <!-- CTA -->
-  <div class="card cta-card">
-    <p>Next, enter any voluntary CPF contributions and cash top-ups.</p>
-    <button class="btn-primary" id="btnToVoluntary">Continue to Voluntary &amp; Top-ups →</button>
-  </div>
-
-</div></div>
-
-<!-- ═══════════════════════════════════════════════════════ PAGE 2: VOLUNTARY -->
-<div class="page" id="page-voluntary"><div class="container">
-
-  <!-- Annual Limit Cap Bar -->
-  <div class="card">
-    <div class="card-header"><div class="card-icon green">📊</div><h2>CPF Annual Limit Usage</h2></div>
-    <div class="cap-card">
-      <div class="cap-card-header">
-        <span class="cap-card-label">Used toward $37,740 Annual Limit</span>
-        <span class="cap-card-value" id="capUsedDisplay">$0</span>
-      </div>
-      <div class="cap-bar-bg"><div class="cap-bar-fill" id="capBarFill" style="width:0%"></div></div>
-      <div class="cap-bar-footer">
-        <span class="cap-bar-pct" id="capPct">0% used</span>
-        <span class="cap-bar-remaining" id="capRemaining">$37,740 remaining</span>
-      </div>
-    </div>
-    <div class="note-box" style="margin-bottom:0;"><span class="icon">💡</span><span>The CPF Annual Limit of $37,740 applies to all mandatory and voluntary CPF contributions combined. Voluntary contributions that would cause you to exceed the limit will not attract tax relief. Note that once accepted by CPF Board, voluntary contributions cannot be refunded.</span></div>
-  </div>
-
-  <!-- Voluntary CPF (SEP/PW only — employees can't voluntarily top up OA/SA for relief post-2022) -->
+  <!-- Voluntary CPF -->
   <div class="card" id="sec-voluntary-cpf">
     <div class="card-header"><div class="card-icon amber">💳</div><h2>Voluntary CPF Contributions</h2></div>
-    <div class="info-box" id="volCPFInfo"><span class="icon">ℹ️</span><span>SEPs and platform workers may make voluntary contributions to their OA, SA, and MA. The tax relief allowed is the lowest of: (a) 37% of net trade income minus compulsory MediSave contributions; (b) the remaining CPF Annual Limit headroom after compulsory contributions; or (c) the actual amount contributed.</span></div>
-    <div id="empVolNote" class="note-box hidden"><span class="icon">💡</span><span>From 1 January 2022, employees cannot claim CPF Relief on voluntary contributions to their OA or SA. Voluntary MediSave top-ups made from that date are instead claimed under CPF Cash Top-up Relief — see the RSTU section below.</span></div>
+    <div class="info-box" id="volCPFInfo"><span class="icon">ℹ️</span><span>SEPs and PWs: relief is the lowest of (a) 37% of NTI minus compulsory MediSave, (b) Annual Limit headroom, or (c) actual contribution.</span></div>
+    <div id="empVolNote" class="note-box hidden"><span class="icon">💡</span><span>From 1 Jan 2022, employees cannot claim CPF Relief on voluntary OA/SA contributions. Voluntary MediSave is claimed under RSTU below.</span></div>
     <div class="form-group" id="volCPFGroup">
-      <label class="field-label">Voluntary CPF Contributions (OA + SA + MA) in 2025</label>
+      <label class="field-label">Voluntary CPF (OA + SA + MA) in 2025</label>
       <div class="input-wrap"><span class="prefix">$</span><input type="number" id="volCPF" placeholder="0.00" min="0" step="0.01"></div>
-      <div class="field-hint">Enter total voluntary contributions made to all three CPF accounts in 2025. Do not include cash top-ups under the RSTU scheme (entered below).</div>
+      <div class="field-hint">Do not include RSTU cash top-ups (entered below).</div>
     </div>
     <div id="volCPFCapRow" class="computed-row" style="margin-top:4px;">
       <span class="computed-lbl">Voluntary CPF relief allowed</span>
       <span class="computed-display" id="volCPFAllowedDisplay">$0.00</span>
     </div>
-    <div class="field-hint" id="volCPFCapNote" style="margin-top:6px;"></div>
+    <div class="field-hint" id="volCPFCapNote" style="margin-top:4px;"></div>
   </div>
 
-  <!-- CPF Cash Top-up Relief (RSTU) -->
+  <!-- CPF Cash Top-up Relief -->
   <div class="card">
     <div class="card-header"><div class="card-icon green">🧑</div><h2>CPF Cash Top-up Relief (RSTU)</h2></div>
-    <div class="info-box"><span class="icon">ℹ️</span><span>Cash top-ups to your own SA or RA qualify for relief of up to <strong>$8,000</strong>. Cash top-ups to eligible family members' SA, RA, or MA qualify for a further <strong>$8,000</strong>. Total maximum relief is <strong>$16,000</strong> per year. This relief is separate from and does not count toward the CPF Annual Limit.</span></div>
-
+    <div class="info-box"><span class="icon">ℹ️</span><span>Up to <strong>$8,000</strong> for self + <strong>$8,000</strong> for family = <strong>$16,000</strong> max. Separate from Annual Limit.</span></div>
     <div class="form-group">
-      <label class="field-label">Cash top-up to your own CPF SA/RA in 2025</label>
+      <label class="field-label">Own SA/RA cash top-up in 2025</label>
       <div class="input-wrap"><span class="prefix">$</span><input type="number" id="topupSelf" placeholder="0.00" min="0" step="0.01"></div>
-      <div class="field-hint">Under the Retirement Sum Topping-Up Scheme (RSTU). Capped at $8,000 for relief.</div>
     </div>
     <div class="toggle-row">
       <label class="toggle" for="selfMRSS"><input type="checkbox" id="selfMRSS"><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
-      <span class="toggle-label" style="font-size:0.85rem;">Some or all of this top-up received a Matched Retirement Savings Scheme (MRSS) grant</span>
+      <span class="toggle-label" style="font-size:0.83rem;">Some/all received MRSS grant</span>
     </div>
     <div class="sub-section hidden" id="selfMRSSSection">
       <div class="form-group" style="margin-bottom:0;">
-        <label class="field-label">Amount that attracted MRSS (to be excluded from relief)</label>
+        <label class="field-label">MRSS-matched amount (excluded from relief)</label>
         <div class="input-wrap"><span class="prefix">$</span><input type="number" id="selfMRSSAmt" placeholder="0.00" min="0" step="0.01"></div>
-        <div class="field-hint">From YA2026, MRSS-matched top-up amounts do not qualify for CPF Cash Top-up Relief.</div>
       </div>
     </div>
-
     <div class="divider"></div>
-
     <div class="form-group">
-      <label class="field-label">Cash top-ups to family members' CPF SA/RA/MA in 2025</label>
+      <label class="field-label">Family SA/RA/MA cash top-up in 2025</label>
       <div class="input-wrap"><span class="prefix">$</span><input type="number" id="topupFamily" placeholder="0.00" min="0" step="0.01"></div>
-      <div class="field-hint">Eligible family: spouse, siblings, parents, parents-in-law, grandparents, grandparents-in-law. Their income must not exceed $8,000 in 2024. Capped at $8,000 for relief. If you are a SEP, you must be up-to-date with your MediSave payable to claim relief on family MA top-ups.</div>
+      <div class="field-hint">Spouse, siblings, parents, grandparents. Their income ≤ $8,000 in 2024.</div>
     </div>
     <div class="toggle-row">
       <label class="toggle" for="familyMRSS"><input type="checkbox" id="familyMRSS"><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
-      <span class="toggle-label" style="font-size:0.85rem;">Some or all of this top-up received an MRSS or Matched MediSave Scheme (MMSS) grant</span>
+      <span class="toggle-label" style="font-size:0.83rem;">Some/all received MRSS/MMSS grant</span>
     </div>
     <div class="sub-section hidden" id="familyMRSSSection">
       <div class="form-group" style="margin-bottom:0;">
-        <label class="field-label">Amount that attracted MRSS/MMSS (to be excluded)</label>
+        <label class="field-label">MRSS/MMSS-matched amount (excluded)</label>
         <div class="input-wrap"><span class="prefix">$</span><input type="number" id="familyMRSSAmt" placeholder="0.00" min="0" step="0.01"></div>
-        <div class="field-hint">From YA2026, MRSS/MMSS-matched amounts are excluded from CPF Cash Top-up Relief.</div>
       </div>
     </div>
-
     <div class="divider"></div>
     <div class="computed-row">
-      <span class="computed-lbl">Total Cash Top-up Relief (RSTU)</span>
+      <span class="computed-lbl">Total Cash Top-up Relief</span>
       <span class="computed-display" id="topupTotalDisplay">$0.00</span>
     </div>
   </div>
 
-  <!-- $80,000 cap context -->
-  <div class="card">
-    <div class="card-header"><div class="card-icon rose">🧾</div><h2>Other Reliefs Context</h2></div>
-    <div class="info-box"><span class="icon">ℹ️</span><span>Your CPF-related reliefs count toward the <strong>$80,000 personal income tax relief cap</strong>. If you have other reliefs (Earned Income Relief, Spouse Relief, NSman, etc.), enter the total here so we can flag if you're near the cap.</span></div>
-    <div class="form-group">
-      <label class="field-label">Total Other Personal Reliefs Claimed (non-CPF)</label>
-      <div class="input-wrap"><span class="prefix">$</span><input type="number" id="otherReliefs" placeholder="0.00" min="0" step="0.01"></div>
-      <div class="field-hint">Optional. Used only to show how much of the $80,000 cap remains after CPF-related reliefs.</div>
-    </div>
-  </div>
-
   <div class="card cta-card">
-    <p>All set — view your full CPF relief calculation and explanation.</p>
+    <p>View your full CPF relief calculation.</p>
     <button class="btn-primary" id="btnToResult">View Results →</button>
   </div>
 
 </div></div>
 
-<!-- ═══════════════════════════════════════════════════════ PAGE 3: RESULTS -->
+<!-- ═══════════════════════════════════════════════════ PAGE 2: RESULTS -->
 <div class="page" id="page-result"><div class="container">
 
-  <!-- Summary card -->
   <div class="summary-card">
-    <div class="card-header"><div class="card-icon white">📊</div><h2>CPF Relief Summary</h2></div>
-    <div id="r-compRow" class="result-row"><span class="result-label" id="r-compLabel">Compulsory CPF / MediSave Relief</span><span class="result-value" id="r-comp">$0.00</span></div>
+    <div class="card-header"><div class="card-icon blue">📊</div><h2>CPF Relief Summary</h2></div>
+    <div id="r-empRow" class="result-row hidden"><span class="result-label">Employee CPF Relief</span><span class="result-value" id="r-emp">$0.00</span></div>
+    <div id="r-sepRow" class="result-row hidden"><span class="result-label">SEP MediSave Relief</span><span class="result-value" id="r-sep">$0.00</span></div>
+    <div id="r-pwRow" class="result-row hidden"><span class="result-label" id="r-pwLabel">PW CPF Relief</span><span class="result-value" id="r-pw">$0.00</span></div>
     <div id="r-volRow" class="result-row hidden"><span class="result-label">Voluntary CPF Relief</span><span class="result-value" id="r-vol">$0.00</span></div>
     <div id="r-topupRow" class="result-row hidden"><span class="result-label">CPF Cash Top-up Relief (RSTU)</span><span class="result-value" id="r-topup">$0.00</span></div>
     <div class="divider"></div>
@@ -471,40 +390,14 @@
         <div class="lbl">Total CPF Relief (YA 2026)</div>
         <div class="amt" id="r-totalBig">$0.00</div>
       </div>
-      <div class="relief-sub-row">
-        <span class="sub-lbl" id="r-capRemLbl">Of $80,000 personal relief cap</span>
-        <span class="sub-amt" id="r-capRem">—</span>
-      </div>
+      <div class="cap-note" id="r-capNote"></div>
     </div>
-    <div class="disclaimer">⚠️ This is an estimate only. Actual relief may differ.</div>
   </div>
 
-  <!-- Step-by-step breakdown -->
   <div class="card">
     <div class="card-header"><div class="card-icon blue">🔍</div><h2>Step-by-Step Calculation</h2></div>
     <div class="steps-container" id="stepsContainer">
-      <div style="color:var(--text-muted);font-size:0.88rem;padding:12px 0;">Enter your details on the Profile tab to see the breakdown.</div>
-    </div>
-  </div>
-
-  <!-- Plain-English Summary -->
-  <div class="card" id="summaryParaCard">
-    <div class="card-header"><div class="card-icon green">📝</div><h2>Plain-English Summary</h2></div>
-    <div class="summary-para" id="summaryPara">Complete your profile to see a summary here.</div>
-  </div>
-
-  <!-- $80,000 cap card -->
-  <div class="card" id="capContextCard">
-    <div class="card-header"><div class="card-icon purple">⚖️</div><h2>$80,000 Relief Cap Position</h2></div>
-    <div id="capContextContent">
-      <div class="result-row"><span class="result-label">CPF-related reliefs</span><span class="result-value" id="rc-cpf">$0.00</span></div>
-      <div class="result-row"><span class="result-label">Other personal reliefs entered</span><span class="result-value" id="rc-other">$0.00</span></div>
-      <div class="divider"></div>
-      <div class="result-row"><span class="result-label strong">Total reliefs used</span><span class="result-value strong" id="rc-total">$0.00</span></div>
-      <div class="result-row"><span class="result-label">Remaining cap headroom</span><span class="result-value" id="rc-remaining" style="color:var(--success);">$80,000</span></div>
-      <div class="warning-box hidden" id="rc-overWarning" style="margin-top:10px;">
-        <span class="icon">⚠️</span><span id="rc-overText"></span>
-      </div>
+      <div style="color:var(--text-muted);font-size:0.85rem;padding:12px 0;">Enter your details to see the breakdown.</div>
     </div>
   </div>
 
