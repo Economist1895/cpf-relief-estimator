@@ -1,93 +1,197 @@
-# CPF Relief Estimator (Beta)
+# CPF Relief Estimator
 
-A lightweight, client-side CPF tax relief estimator for Singapore taxpayers, built as a static web app. Covers employees, self-employed persons, and platform workers for Year of Assessment (YA) 2026.
+A personal project to help calculate **CPF tax relief** for Singapore's Year of Assessment 2026 (YA2026).
 
-> **Disclaimer:** This tool provides estimates only. Actual relief may differ based on individual circumstances and IRAS assessment. Refer to IRAS and CPF Board for official guidance.
+**Live tool**: https://economist1895.github.io/cpf-relief-estimator/
+
+---
+
+## ⚠️ Disclaimer
+
+**This tool is educational and provided as-is.** It is **not an official IRAS or CPF Board product** and should not be used as a substitute for professional tax advice. 
+
+The author assumes no liability for errors, omissions, or tax consequences arising from use of this tool.
+
+---
 
 ## Features
 
-### Worker Types
-Supports mixed income profiles — tick any combination:
-- **Employee** — salaried workers with monthly CPF deductions
-- **Self-Employed (SEP)** — freelancers, sole proprietors, consultants, etc.
-- **Platform Worker** — Grab, delivery, ride-hail platforms (mandatory or opted-in)
+This tool calculates CPF-related tax relief for:
 
-### CPF Relief Components
+- **Employees** — Compulsory employee share on ordinary wages (OW) and additional wages (AW)
+- **Self-Employed Persons (SEPs)** — Compulsory MediSave based on Net Trade Income (NTI)
+- **Platform Workers (PWs)** — Mandatory/opted-in CPF or MediSave contributions
+- **Voluntary CPF** — Relief subject to the 37% NTI cap (SEPs) and Annual Limit headroom
+- **CPF Cash Top-ups (RSTU)** — Self and family cash top-ups, with MRSS/MMSS exclusions (YA2026)
 
-**Employee CPF Relief**
-- Computed automatically from monthly Ordinary Wage (OW) and annual Additional Wages (AW)
-- Uses age-based employee contribution rates against the 2025 OW ceiling of $7,400/month
-- Optional override field for multi-employer situations
+The tool accounts for:
+- Age-based contribution rate bands
+- Multiple ceilings and caps
+- Phased-in contribution rates for certain income ranges
+- Pensioner MediSave rules
+- Pre-1995 platform worker opt-in eligibility
+- The $37,740 Annual Limit with pooling rules
 
-**SEP MediSave Relief**
-- Compulsory MediSave contributions computed from Net Trade Income (NTI) and age using the full CPF rate table, including the phased-in formula for the $12,001–$18,000 NTI band
-- Pensioner rate (6%, capped at $5,328) supported via toggle
-- From YA 2026, the full compulsory MediSave amount qualifies for relief with no upper cap
+---
 
-**Platform Worker CPF Relief**
-- Mandatory contributors (born on/after 1 Jan 1995) and opted-in workers: worker share computed from the 2025 phased-in transition rate table by age
-- Non-opted-in workers (born before 1995): MediSave only, using SEP MediSave rates on net platform earnings
+## How It Works
 
-**Voluntary CPF Relief**
-- Available to SEPs and platform workers making voluntary contributions to OA, SA, and MA
-- Capped at the lowest of: (a) 37% of NTI minus compulsory MediSave; (b) Annual Limit headroom; (c) actual amount contributed
+### Overview
 
-**CPF Cash Top-up Relief (RSTU)**
-- Own SA/RA top-ups: up to $8,000
-- Family members' SA/RA/MA top-ups: up to $8,000
-- Total maximum: $16,000 per year, separate from the CPF Annual Limit
-- MRSS and MMSS-matched amounts excluded from YA 2026
+The tool computes your total CPF relief by:
 
-### Annual Limit Tracking
-- Live progress bar showing usage of the $37,740 CPF Annual Limit across all compulsory and voluntary contributions
-- Pooled cap applied across worker types, with SEP MediSave taking precedence over employee CPF
+1. **Identifying income types** — You select employee, SEP, PW, or any combination
+2. **Calculating compulsory contributions** — Based on age, income, and worker type
+3. **Applying ceilings and caps** — OW ceiling, AW ceiling, Annual Limit
+4. **Computing voluntary relief** — Subject to the 37% rule (SEPs only) and Annual Limit headroom
+5. **Summing RSTU cash top-ups** — Excluding MRSS/MMSS-matched amounts
+6. **Displaying step-by-step breakdown** — Each calculation is shown with full working
 
-### Results
-- Step-by-step calculation breakdown for each relief component, with formulas shown
-- Plain-English summary of the full relief position
-- $80,000 personal income tax relief cap tracker, with optional entry of other personal reliefs
+### Methodology & Key Assumptions
 
-## Tech
+#### **Employee CPF (Compulsory)**
 
-Pure HTML, CSS, and vanilla JS — no frameworks, no build step, no dependencies except IBM Plex Sans loaded from Google Fonts.
+**Rates (2025)** — Age-based employee share:
+- Age ≤ 55: 20%
+- Age 56–60: 17%
+- Age 61–65: 11.5%
+- Age 66–70: 7.5%
+- Age 71+: 5%
+
+**Ceilings:**
+- **Ordinary Wage (OW)**: $7,400/month → annual OW = OW × 12, capped at $88,800
+- **Additional Wages (AW)**: Annual limit = $102,000 − annual OW
+
+**Calculation:**
+```
+Total wages = (Monthly OW, capped at $7,400) × 12 + (AW, capped at ceiling)
+Employee CPF = Total wages × age-based rate
+```
+
+If you have multiple employers, OW ceiling applies per employer. The tool allows you to override with your actual total CPF deducted.
+
+---
+
+#### **SEP MediSave (Compulsory)**
+
+**Non-pensioners** — NTI-based, age-bracketed (2025):
+
+| Age Range | Low Rate (≤$12k) | High Rate (>$18k) | Max Amount | Phase Band ($12k–$18k) |
+|-----------|------------------|-------------------|------------|------------------------|
+| ≤34       | 4.0%             | 8.0%              | $7,104     | $480 + 16% of excess    |
+| 35–44     | 4.5%             | 9.0%              | $7,992     | $540 + 18% of excess    |
+| 45–49     | 5.0%             | 10.0%             | $8,880     | $600 + 20% of excess    |
+| 50+       | 5.25%            | 10.5%             | $9,324     | $630 + 21% of excess    |
+
+**Pensioners** — Lower cap (6% max $5,328 for NTI > $18k), but same rates as non-pensioners for NTI ≤ $12k.
+
+**Rule:**
+- NTI ≤ $6,000: No compulsory MediSave
+- NTI $6,001–$12,000: Low rate applies
+- NTI $12,001–$18,000: Phased-in formula
+- NTI > $18,000: High rate or pensioner cap
+
+**From YA2026**: Full compulsory MediSave amount qualifies for relief.
+
+---
+
+#### **Platform Worker CPF/MediSave**
+
+**Opted-in (mandatory or voluntary, born 1995+)** — Worker share only:
+
+| Age Range | Rate  |
+|-----------|-------|
+| ≤35       | 10.5% |
+| 36–45     | 11.5% |
+| 46–50     | 12.5% |
+| 51–60     | 13.0% |
+| 61–65     | 10.5% |
+| 66–70     | 10.5% |
+| 71+       | 9.0%  |
+
+- Net earnings capped at $102,000
+- Only earnings > $6,000 attract relief
+- Platform operator contributions (not in relief) are also deducted
+
+**Not opted-in (born before 1995, if not elected)** — MediSave only, at SEP rates.
+
+---
+
+#### **Voluntary CPF Relief**
+
+**For SEPs & opted-in PWs** — Lowest of:
+- **(A)** 37% of NTI − compulsory MediSave (SEPs only)
+- **(B)** Annual Limit headroom ($37,740 − total compulsory)
+- **(C)** Actual contribution
+
+**For Employees** — No relief on voluntary OA/SA from 1 Jan 2022 (but voluntary MediSave is claimed under RSTU).
+
+---
+
+#### **Annual Limit ($37,740)**
+
+Pools all compulsory and voluntary CPF relief. Priority:
+1. SEP MediSave and PW CPF/MediSave are deducted first
+2. Employee CPF is reduced if combined total exceeds $37,740
+3. Remaining headroom available for voluntary contributions
+
+---
+
+#### **CPF Cash Top-up Relief (RSTU)**
+
+**Caps:**
+- Self top-up: $8,000/year
+- Family top-up: $8,000/year
+- Total: $16,000/year
+
+**From YA2026:** MRSS- and MMSS-matched amounts are **excluded** from relief.
+
+**Does not count** toward the $37,740 Annual Limit.
+
+---
+
+## Development
+
+### Setup
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/economist1895/cpf-relief-estimator.git
+   cd cpf-relief-estimator
+   ```
+
+2. Open `index.html` in a browser, or serve locally:
+   ```bash
+   python3 -m http.server 8000
+   # Open http://localhost:8000
+   ```
+
+### Docker
+
+A Dockerfile is included for deployment:
+```bash
+docker build -t cpf-relief-estimator .
+docker run -p 8080:80 cpf-relief-estimator
+# Open http://localhost:8080
+```
+
+### File Structure
 
 ```
-cpf-relief.html   — structure and styles
-app.js            — all interactivity and computation logic
-logo.png          — header logo
+.
+├── index.html       # HTML form & results layout
+├── app.js           # Calculation engine & event handlers
+├── logo.png         # IRAS logo
+├── Dockerfile       # Multi-stage nginx build
+└── README.md        # This file
 ```
 
-The JS is structured as a single `DOMContentLoaded` block with no inline event handlers.
+### Browser Compatibility
 
-## Tax Rules Reference
+Built with vanilla JavaScript (ES5). Works on all modern browsers (Chrome, Firefox, Safari, Edge).
 
-Calculations follow IRAS and CPF Board rules for YA 2026 (income year 2025):
+---
 
-| Parameter | Value |
-|---|---|
-| OW ceiling | $7,400/month |
-| AW ceiling | $102,000 − total OW subject to CPF |
-| CPF Annual Limit | $37,740 |
-| Employee contribution rates | 20% (≤55), 17% (56–60), 11.5% (61–65), 7% (66–70), 5% (>70) |
-| SEP MediSave rates | 4–10.5% of NTI by age band; phased-in formula for $12,001–$18,000 |
-| PW worker share (2025) | 9–13% by age |
-| RSTU relief cap | $8,000 self + $8,000 family |
-| Personal relief cap | $80,000 |
+## License
 
-Key rule changes for YA 2026:
-- SEPs receive full relief on compulsory MediSave with no upper cap (previously capped)
-- MRSS/MMSS-matched top-up amounts no longer qualify for CPF Cash Top-up Relief
-- Platform worker CPF contributions begin phased alignment with employee rates (2025–2029)
-
-**Sources:** [IRAS CPF Relief for Employees](https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/central-provident-fund(cpf)-relief-for-employees) · [IRAS CPF Relief for Self-Employed](https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/central-provident-fund-(cpf)-relief-for-self-employed-employee-who-is-also-self-employed) · [IRAS CPF Relief as a Platform Worker](https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-reliefs-rebates-and-deductions/tax-reliefs/central-provident-fund-(cpf)-relief-as-a-platform-worker) · [CPF Board contribution rate tables](https://www.cpf.gov.sg/employer/employer-obligations/how-much-cpf-contributions-to-pay)
-
-## Known Limitations
-
-- **PR rates not differentiated** — first- and second-year PRs have reduced CPF rates. The tool uses third-year-onwards rates for all PRs and displays a notice accordingly.
-- **Multi-employer OW ceiling** — where a taxpayer has more than one employer, each employer applies the OW ceiling independently. An override field is provided for users to enter their actual total CPF deducted.
-- **Annual approximation for platform workers** — CPF contributions for platform workers are computed monthly per platform operator. The tool annualises net earnings for simplicity, which may differ slightly from the actual sum of monthly deductions.
-- **RSTU top-up limits not verified** — the tool does not check whether top-ups exceed the member's Full Retirement Sum (own account) or Basic Healthcare Sum (MediSave). Users should check their CPF Retirement Dashboard before making top-ups.
-
-## Status
-
-Beta — calculations have been manually verified against IRAS and CPF Board guidelines but have not been officially endorsed.
+Personal project. No warranty. Use at your own risk. See [Disclaimer](#-disclaimer) above.
