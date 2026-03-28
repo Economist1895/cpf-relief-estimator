@@ -20,27 +20,23 @@ document.addEventListener('DOMContentLoaded', function () {
   var isSC = true;
   var isPW1995 = true;
 
-  // ── Tab switching ─────────────────────────────────────────────────────────
+  // ── Tab switching (2 tabs: inputs, result) ────────────────────────────────
   function switchTab(tab) {
-    ['profile', 'voluntary', 'result'].forEach(function (t) {
+    ['inputs', 'result'].forEach(function (t) {
       $('page-' + t).classList.toggle('active', t === tab);
       $('tab-' + t).classList.toggle('active', t === tab);
     });
     if (tab === 'result') updateResults();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
-  $('tab-profile').addEventListener('click', function () { switchTab('profile'); });
-  $('tab-voluntary').addEventListener('click', function () { switchTab('voluntary'); });
+  $('tab-inputs').addEventListener('click', function () { switchTab('inputs'); });
   $('tab-result').addEventListener('click', function () { switchTab('result'); });
-  $('btnToVoluntary').addEventListener('click', function () { switchTab('voluntary'); });
   $('btnToResult').addEventListener('click', function () { switchTab('result'); });
 
   // ── Reset ─────────────────────────────────────────────────────────────────
   $('btnReset').addEventListener('click', function () {
-    // Clear all number inputs
     document.querySelectorAll('input[type="number"]').forEach(function (el) { el.value = ''; });
 
-    // Reset worker type checkboxes — Employee only
     isEmpType = true; isSEPType = false; isPWType = false;
     $('wc-employee').querySelector('input').checked = true;
     $('wc-sep').querySelector('input').checked = false;
@@ -50,36 +46,31 @@ document.addEventListener('DOMContentLoaded', function () {
     $('wc-pw').classList.remove('selected');
     hide('noTypeWarning');
 
-    // Reset SC/PR to SC
     isSC = true;
     $('btnSC').classList.add('active'); $('btnPR').classList.remove('active');
     $('prNote').style.display = 'none';
 
-    // Reset PW birth year to 1995+
     isPW1995 = true;
     $('btnPW1995').classList.add('active'); $('btnPWPre1995').classList.remove('active');
     $('pwOptInSection').classList.add('hidden');
     $('pwOptedInSection').classList.remove('hidden');
     $('pwNotOptedSection').classList.add('hidden');
 
-    // Reset all checkboxes/toggles
     ['sepPensioner', 'pwOptIn', 'selfMRSS', 'familyMRSS'].forEach(function (id) {
       $(id).checked = false;
     });
     $('selfMRSSSection').classList.add('hidden');
     $('familyMRSSSection').classList.add('hidden');
 
-    // Reset displayed computed values
     ['empCPFDisplay', 'sepMADisplay', 'pwCPFDisplay', 'pwMADisplay',
      'volCPFAllowedDisplay', 'topupTotalDisplay'].forEach(function (id) {
       setText(id, '$0.00');
     });
     $('volCPFCapNote').textContent = '';
 
-    // Apply worker type visibility and go back to first tab
     applyWorkerType();
     applyPWOptIn();
-    switchTab('profile');
+    switchTab('inputs');
     recalc();
   });
 
@@ -89,11 +80,9 @@ document.addEventListener('DOMContentLoaded', function () {
       isEmpType = $('wc-employee').querySelector('input').checked;
       isSEPType = $('wc-sep').querySelector('input').checked;
       isPWType  = $('wc-pw').querySelector('input').checked;
-      // Sync selected styling
       ['wc-employee', 'wc-sep', 'wc-pw'].forEach(function (id) {
         $(id).classList.toggle('selected', $(id).querySelector('input').checked);
       });
-      // Warn if nothing selected
       $('noTypeWarning').classList.toggle('hidden', isEmpType || isSEPType || isPWType);
       applyWorkerType();
       recalc();
@@ -106,7 +95,6 @@ document.addEventListener('DOMContentLoaded', function () {
     $('sec-pw').classList.toggle('hidden', !isPWType);
     $('sec-pw-sep-note').classList.toggle('hidden', !(isPWType && isSEPType));
 
-    // Voluntary CPF: SEP or PW can claim; pure employee cannot
     var canClaimVol = isSEPType || isPWType;
     $('sec-voluntary-cpf').classList.remove('hidden');
     if (!canClaimVol) {
@@ -121,7 +109,6 @@ document.addEventListener('DOMContentLoaded', function () {
       show('volCPFInfo');
     }
 
-    // Multi-employer note
     $('multiEmpNote').classList.toggle('hidden', !isEmpType);
   }
 
@@ -155,20 +142,15 @@ document.addEventListener('DOMContentLoaded', function () {
     applyPWOptIn();
     recalc();
   });
-  $('pwOptIn').addEventListener('change', function () {
-    applyPWOptIn();
-    recalc();
-  });
+  $('pwOptIn').addEventListener('change', function () { applyPWOptIn(); recalc(); });
   function applyPWOptIn() {
     var optedIn = isPW1995 || $('pwOptIn').checked;
     $('pwOptedInSection').classList.toggle('hidden', !optedIn);
     $('pwNotOptedSection').classList.toggle('hidden', optedIn);
   }
 
-  // ── SEP pensioner toggle ──────────────────────────────────────────────────
   $('sepPensioner').addEventListener('change', recalc);
 
-  // ── MRSS toggles ─────────────────────────────────────────────────────────
   $('selfMRSS').addEventListener('change', function () {
     $('selfMRSSSection').classList.toggle('hidden', !this.checked);
     recalc();
@@ -180,9 +162,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // ── Number input guards ───────────────────────────────────────────────────
   document.querySelectorAll('input[type="number"]').forEach(function (el) {
-    el.addEventListener('keydown', function (e) {
-      if (e.key === '-') e.preventDefault();
-    });
+    el.addEventListener('keydown', function (e) { if (e.key === '-') e.preventDefault(); });
     el.addEventListener('input', function () {
       if (this.value !== '' && parseFloat(this.value) < 0) this.value = 0;
       recalc();
@@ -201,15 +181,15 @@ document.addEventListener('DOMContentLoaded', function () {
   // ═══════════════════════════════════════════════════════════════════════════
 
   // Employee CPF contribution rates (employee share), 2025
-  // Age is as of Dec 31 of the income year
+  // BUG FIX: age 66-70 corrected from 0.07 to 0.075 per official CPF table
   var EMP_RATES = [
     { maxAge: 55,  rate: 0.20 },
     { maxAge: 60,  rate: 0.17 },
     { maxAge: 65,  rate: 0.115 },
-    { maxAge: 70,  rate: 0.07 },
+    { maxAge: 70,  rate: 0.075 },
     { maxAge: 999, rate: 0.05 }
   ];
-  var OW_CEILING = 7400;   // per month, 2025
+  var OW_CEILING = 7400;
   var AW_CEILING_TOTAL = 102000;
   var CPF_ANNUAL_LIMIT = 37740;
 
@@ -228,32 +208,31 @@ document.addEventListener('DOMContentLoaded', function () {
     var totalWages = owAnnual + awCapped;
     var rate = getEmpRate(age);
     var raw = totalWages * rate;
-    // Note: we do NOT cap at Annual Limit here — that is done in recalc
-    // after pooling with any SEP MediSave contributions
     return {
-      owCapped: owCapped,
-      owAnnual: owAnnual,
-      awCapped: awCapped,
-      awCeiling: awCeiling,
-      rate: rate,
-      rawCPF: raw   // uncapped — pooled cap applied in recalc
+      owCapped: owCapped, owAnnual: owAnnual,
+      awCapped: awCapped, awCeiling: awCeiling,
+      rate: rate, rawCPF: raw
     };
   }
 
-  // SEP MediSave rates (non-pensioner), 2025 work year
-  // Returns { rate: effective rate, amount: payable, formula: string }
+  // SEP MediSave rates (non-pensioner), 2025
   var SEP_MA_CAPS = [
-    { maxAge: 34,  lowRate: 0.040, highRate: 0.080, maxAmt: 7104,
-      phaseA: 480,  phaseB: 0.1600 },
-    { maxAge: 44,  lowRate: 0.045, highRate: 0.090, maxAmt: 7992,
-      phaseA: 540,  phaseB: 0.1800 },
-    { maxAge: 49,  lowRate: 0.050, highRate: 0.100, maxAmt: 8880,
-      phaseA: 600,  phaseB: 0.2000 },
-    { maxAge: 999, lowRate: 0.0525, highRate: 0.105, maxAmt: 9324,
-      phaseA: 630,  phaseB: 0.2100 }
+    { maxAge: 34,  lowRate: 0.040, highRate: 0.080, maxAmt: 7104, phaseA: 480,  phaseB: 0.1600 },
+    { maxAge: 44,  lowRate: 0.045, highRate: 0.090, maxAmt: 7992, phaseA: 540,  phaseB: 0.1800 },
+    { maxAge: 49,  lowRate: 0.050, highRate: 0.100, maxAmt: 8880, phaseA: 600,  phaseB: 0.2000 },
+    { maxAge: 999, lowRate: 0.0525, highRate: 0.105, maxAmt: 9324, phaseA: 630,  phaseB: 0.2100 }
   ];
   var PENSIONER_RATE = 0.06;
   var PENSIONER_MAX  = 5328;
+
+  // Pensioner phase-in formulas for $12,001-$18,000 band
+  // From official CPF table: pensioners phase from lowRate to 6%
+  var PENSIONER_PHASE = [
+    { maxAge: 34,  phaseA: 480, phaseB: 0.10 },
+    { maxAge: 44,  phaseA: 540, phaseB: 0.09 },
+    { maxAge: 49,  phaseA: 600, phaseB: 0.08 },
+    { maxAge: 999, phaseA: 630, phaseB: 0.075 }
+  ];
 
   function getSEPMAbracket(age) {
     for (var i = 0; i < SEP_MA_CAPS.length; i++) {
@@ -262,23 +241,49 @@ document.addEventListener('DOMContentLoaded', function () {
     return SEP_MA_CAPS[SEP_MA_CAPS.length - 1];
   }
 
+  function getPensionerPhase(age) {
+    for (var i = 0; i < PENSIONER_PHASE.length; i++) {
+      if (age <= PENSIONER_PHASE[i].maxAge) return PENSIONER_PHASE[i];
+    }
+    return PENSIONER_PHASE[PENSIONER_PHASE.length - 1];
+  }
+
   function computeSEPMA(age, nti, isPensioner) {
     if (nti <= 6000) return { amount: 0, desc: 'NTI ≤ $6,000 — no compulsory MediSave payable.', rate: 0 };
-    if (isPensioner) {
-      var amt = Math.min(nti * PENSIONER_RATE, PENSIONER_MAX);
-      return { amount: amt, rate: PENSIONER_RATE, desc: 'Pensioner rate: 6% × NTI, capped at $5,328.' };
-    }
+
     var b = getSEPMAbracket(age);
+
+    if (isPensioner) {
+      // BUG FIX: Pensioners use same lower-band rates as non-pensioners for NTI $6,001-$12,000
+      var amount, desc, rate;
+      if (nti <= 12000) {
+        // Same as non-pensioner lower rate
+        amount = nti * b.lowRate;
+        rate = b.lowRate;
+        desc = fmtPct(b.lowRate) + ' × NTI (NTI $6,001–$12,000 — same rate as non-pensioner)';
+      } else if (nti <= 18000) {
+        var pp = getPensionerPhase(age);
+        amount = pp.phaseA + pp.phaseB * (nti - 12000);
+        rate = amount / nti;
+        desc = '$' + pp.phaseA + ' + ' + fmtPct(pp.phaseB) + ' × (NTI − $12,000) [pensioner phased-in band]';
+      } else {
+        amount = Math.min(nti * PENSIONER_RATE, PENSIONER_MAX);
+        rate = PENSIONER_RATE;
+        desc = '6% × NTI, capped at $5,328 (pensioner rate, NTI > $18,000)';
+      }
+      return { amount: amount, rate: rate, desc: desc };
+    }
+
+    // Non-pensioner
     var amount, desc, rate;
     if (nti <= 12000) {
       amount = nti * b.lowRate;
       rate = b.lowRate;
-      desc = fmtPct(b.lowRate) + ' × NTI (NTI in $6,001–$12,000 band)';
+      desc = fmtPct(b.lowRate) + ' × NTI (NTI $6,001–$12,000)';
     } else if (nti <= 18000) {
-      // Phased-in formula: (phaseA + phaseB × (NTI - 12000)) / NTI × NTI = phaseA + phaseB × (NTI-12000)
       amount = b.phaseA + b.phaseB * (nti - 12000);
       rate = amount / nti;
-      desc = '$' + b.phaseA + ' + ' + fmtPct(b.phaseB) + ' × (NTI − $12,000) [phased-in band $12,001–$18,000]';
+      desc = '$' + b.phaseA + ' + ' + fmtPct(b.phaseB) + ' × (NTI − $12,000) [phased-in $12,001–$18,000]';
     } else {
       amount = Math.min(nti * b.highRate, b.maxAmt);
       rate = b.highRate;
@@ -287,9 +292,7 @@ document.addEventListener('DOMContentLoaded', function () {
     return { amount: amount, rate: rate, desc: desc };
   }
 
-  // Platform Worker rates (opted-in/mandatory, 2025) — WORKER SHARE ONLY
-  // Source: CPF Board, CPFPWContributionRatePWA2025_2029
-  // Ages below use December-31 age convention (simplified to annual)
+  // Platform Worker rates (opted-in/mandatory, 2025)
   var PW_RATES_2025 = [
     { maxAge: 35,  workerPct: 0.105 },
     { maxAge: 45,  workerPct: 0.115 },
@@ -309,49 +312,41 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function computePWCPF(age, netEarnings) {
-    // Net earnings capped at $102,000 per PO for CPF
     var capped = Math.min(netEarnings, 102000);
-    // Workers earning ≤$500/month on average don't pay worker share; approximate: annual ≤$6,000
-    if (netEarnings <= 6000) return { amount: 0, rate: 0, desc: 'Net platform earnings ≤ $6,000 — no worker share CPF payable.' };
+    if (netEarnings <= 6000) return { amount: 0, rate: 0, desc: 'Net earnings ≤ $6,000 — no worker share CPF.' };
     var rate = getPWRate2025(age);
     var amount = capped * rate;
     return { amount: amount, rate: rate, desc: fmtPct(rate) + ' × net earnings (2025 phased rate, age ' + age + ')' };
   }
 
-  // Non-opted-in PW: MediSave only, same rates as SEP
   function computePWMA(age, netEarnings) {
-    // Non-opted-in PWs contribute MediSave on net platform earnings at SEP rates
     return computeSEPMA(age, netEarnings, false);
   }
 
   // ─── Main recalc ──────────────────────────────────────────────────────────
   function recalc() {
-    var age = parseInt($('age').value) || 0;
-    var isEmp = isEmpType;
-    var isSEP = isSEPType;
-    var isPW  = isPWType;
+    var rawAge = parseInt($('age').value);
+    var age = (isNaN(rawAge) || rawAge < 16 || rawAge > 100) ? 0 : rawAge;
+    var isEmp = isEmpType, isSEP = isSEPType, isPW = isPWType;
 
-    // 1. Employee CPF
     var empCPF = 0, empDetail = null;
     if (isEmp && age > 0) {
       var override = val('empOverrideCPF');
       if (override > 0) {
-        empCPF = override; // will be pooled-capped below
+        empCPF = override;
         empDetail = { override: true, raw: override, capped: empCPF };
       } else {
         empDetail = computeEmpCPF(age, val('empOW'), val('empAW'));
-        empCPF = empDetail.rawCPF; // raw, uncapped
+        empCPF = empDetail.rawCPF;
       }
     }
 
-    // 2. SEP MediSave
     var sepMAResult = null, sepMA = 0;
     if (isSEP && age > 0) {
       sepMAResult = computeSEPMA(age, val('sepNTI'), $('sepPensioner').checked);
       sepMA = sepMAResult.amount;
     }
 
-    // 3. Platform worker
     var pwCPF = 0, pwMA = 0, pwDetail = null, pwMADetail = null;
     if (isPW && age > 0) {
       var optedIn = isPW1995 || $('pwOptIn').checked;
@@ -364,13 +359,10 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
 
-    // 4. Pool compulsory contributions and apply Annual Limit cap.
-    // SEP MediSave and PW contributions take precedence; employee CPF is the residual.
     var sepPWCompulsory = sepMA + pwCPF + pwMA;
     var empCPFAllowed = Math.max(0, Math.min(empCPF, CPF_ANNUAL_LIMIT - sepPWCompulsory));
     var totalCompulsory = empCPFAllowed + sepPWCompulsory;
 
-    // Update all computed display fields (reset to $0.00 if not applicable)
     setText('empCPFDisplay', isEmp ? fmt(empCPFAllowed) : '$0.00');
     setText('sepMADisplay',  isSEP ? fmt(sepMA)         : '$0.00');
     if (isPW) {
@@ -388,13 +380,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var headroom = Math.max(0, CPF_ANNUAL_LIMIT - totalCompulsory);
 
-    // 5. Voluntary CPF (SEP/PW only — employees cannot claim voluntary OA/SA relief)
-    // Cap A: 37% of net trade income minus compulsory MediSave contributions
-    //        This cap only applies when there is trade income (SEP income).
-    //        For opted-in PWs with no SEP income, there is no 37%-of-earnings cap;
-    //        only the Annual Limit headroom (Cap B) applies.
-    // Cap B: Annual Limit headroom (after all compulsory contributions)
-    // Cap C: Actual voluntary amount contributed
     var volCPF = 0, volCPFAllowed = 0, volCPFCapNote = '';
     var canClaimVol = isSEP || isPW;
     if (canClaimVol) {
@@ -405,7 +390,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (isSEP && sepNTI > 0) {
         capA = Math.max(0, 0.37 * sepNTI - totalCompulsoryMA);
       } else {
-        capA = CPF_ANNUAL_LIMIT; // no 37%-of-NTI cap without trade income
+        capA = CPF_ANNUAL_LIMIT;
       }
       var capB = headroom;
       volCPFAllowed = Math.min(rawVol, capA, capB);
@@ -416,19 +401,17 @@ document.addEventListener('DOMContentLoaded', function () {
           var reason = (capA <= capB && isSEP)
             ? '37% of NTI minus compulsory MediSave (' + fmt(capA) + ')'
             : 'Annual Limit headroom (' + fmt(capB) + ')';
-          volCPFCapNote = 'Your voluntary contribution of ' + fmt(rawVol) + ' is capped to ' + fmt(volCPFAllowed) + ' by the ' + reason + ' limit.';
+          volCPFCapNote = 'Capped to ' + fmt(volCPFAllowed) + ' by ' + reason + '.';
         } else {
-          volCPFCapNote = 'Full voluntary contribution qualifies for relief.';
+          volCPFCapNote = 'Full amount qualifies for relief.';
         }
       }
       setText('volCPFAllowedDisplay', fmt(volCPFAllowed));
       $('volCPFCapNote').textContent = volCPFCapNote;
     }
 
-    // Expose empCPFAllowed for steps display
     empCPF = empCPFAllowed;
 
-    // 6. RSTU Cash Top-up
     var selfTopup = Math.min(val('topupSelf'), 8000);
     var selfMRSS  = $('selfMRSS').checked ? Math.min(val('selfMRSSAmt'), selfTopup) : 0;
     var selfRelief = Math.max(0, selfTopup - selfMRSS);
@@ -438,33 +421,23 @@ document.addEventListener('DOMContentLoaded', function () {
     var topupTotal = selfRelief + famRelief;
     setText('topupTotalDisplay', fmt(topupTotal));
 
-    // 7. Update cap bar (Annual Limit — compulsory + voluntary only, not RSTU)
-    var capUsed = totalCompulsory + volCPF;
-    var capPct = Math.min(100, capUsed / CPF_ANNUAL_LIMIT * 100);
-    var capFill = $('capBarFill');
-    capFill.style.width = capPct + '%';
-    capFill.className = 'cap-bar-fill' + (capUsed > CPF_ANNUAL_LIMIT ? ' over' : '');
-    setText('capUsedDisplay', '$' + Math.round(capUsed).toLocaleString('en-SG'));
-    setText('capPct', Math.round(capPct) + '% used');
-    setText('capRemaining', fmt(Math.max(0, CPF_ANNUAL_LIMIT - capUsed)) + ' remaining');
 
-    // 8. Total CPF relief
     var compulsoryRelief = empCPF + sepMA + pwCPF + pwMA;
     var totalCPFRelief = compulsoryRelief + volCPF + topupTotal;
 
-    // Store for results
     window._cpfState = {
       age: age, isEmp: isEmp, isSEP: isSEP, isPW: isPW, isSC: isSC,
       empCPF: empCPF, empDetail: empDetail,
+      empOW: val('empOW'), empAW: val('empAW'),
       sepMA: sepMA, sepMAResult: sepMAResult, nti: val('sepNTI'), isPensioner: $('sepPensioner').checked,
       pwCPF: pwCPF, pwDetail: pwDetail, pwMA: pwMA, pwMADetail: pwMADetail,
       isPW1995: isPW1995, pwOptedIn: isPW1995 || (isPW && $('pwOptIn').checked),
       pwNetEarnings: val('pwNetEarnings'), pwMANetEarnings: val('pwMANetEarnings'),
       volCPF: volCPF, volCPFAllowed: volCPFAllowed, volCPFRaw: val('volCPF'), volCapNote: volCPFCapNote,
+      topupSelfRaw: val('topupSelf'), topupFamRaw: val('topupFamily'),
       topupSelf: selfRelief, topupFam: famRelief, topupTotal: topupTotal,
       selfMRSSAmt: selfMRSS, famMRSSAmt: famMRSS,
-      compulsoryRelief: compulsoryRelief, totalCPFRelief: totalCPFRelief,
-      otherReliefs: val('otherReliefs')
+      compulsoryRelief: compulsoryRelief, totalCPFRelief: totalCPFRelief
     };
   }
 
@@ -473,230 +446,241 @@ document.addEventListener('DOMContentLoaded', function () {
     recalc();
     var s = window._cpfState;
     if (!s || s.age === 0) {
-      $('stepsContainer').innerHTML = '<div style="color:var(--text-muted);font-size:0.88rem;padding:12px 0;">Please enter your age and income details first.</div>';
+      $('stepsContainer').innerHTML = '<div style="color:var(--text-muted);font-size:0.85rem;padding:12px 0;">Please enter your age and income details first.</div>';
       return;
     }
 
-    // Summary card values
-    setText('r-comp', fmt(s.compulsoryRelief));
     setText('r-total', fmt(s.totalCPFRelief));
     setText('r-totalBig', fmt(s.totalCPFRelief));
 
-    // Set compulsory label based on type
-    var compLabel = '';
-    if (s.isEmp && !s.isSEP && !s.isPW) compLabel = 'Compulsory Employee CPF Relief';
-    else if (s.isSEP && !s.isEmp) compLabel = 'Compulsory MediSave Relief (SEP)';
-    else if (s.isPW && s.pwOptedIn) compLabel = 'Worker Share CPF Relief (Platform Worker)';
-    else if (s.isPW && !s.pwOptedIn) compLabel = 'MediSave Relief (Platform Worker)';
-    else compLabel = 'Compulsory CPF / MediSave Relief';
-    setText('r-compLabel', compLabel);
+    // Show separate rows for each compulsory relief source
+    if (s.isEmp && s.empCPF > 0) { show('r-empRow'); setText('r-emp', fmt(s.empCPF)); } else { hide('r-empRow'); }
+    if (s.isSEP && s.sepMA > 0) { show('r-sepRow'); setText('r-sep', fmt(s.sepMA)); } else { hide('r-sepRow'); }
+    if (s.isPW && (s.pwCPF > 0 || s.pwMA > 0)) {
+      show('r-pwRow');
+      if (s.pwOptedIn) {
+        setText('r-pwLabel', 'PW CPF Relief (worker share)');
+        setText('r-pw', fmt(s.pwCPF));
+      } else {
+        setText('r-pwLabel', 'PW MediSave Relief');
+        setText('r-pw', fmt(s.pwMA));
+      }
+    } else { hide('r-pwRow'); }
 
-    if (s.compulsoryRelief > 0) { show('r-compRow'); } else { hide('r-compRow'); }
     if (s.volCPF > 0) { show('r-volRow'); setText('r-vol', fmt(s.volCPF)); } else { hide('r-volRow'); }
     if (s.topupTotal > 0) { show('r-topupRow'); setText('r-topup', fmt(s.topupTotal)); } else { hide('r-topupRow'); }
 
-    // $80k cap
-    var totalAll = s.totalCPFRelief + s.otherReliefs;
-    var capRem = Math.max(0, 80000 - totalAll);
-    setText('r-capRem', fmt(capRem) + ' headroom left');
-    setText('rc-cpf', fmt(s.totalCPFRelief));
-    setText('rc-other', fmt(s.otherReliefs));
-    setText('rc-total', fmt(totalAll));
-    setText('rc-remaining', fmt(capRem));
-    $('rc-remaining').style.color = totalAll > 80000 ? 'var(--error)' : 'var(--success)';
-    if (totalAll > 80000) {
-      show('rc-overWarning');
-      setText('rc-overText', 'Your total reliefs (' + fmt(totalAll) + ') exceed the $80,000 cap. CPF-related reliefs may be partially disallowed. Consider redistributing some reliefs to other family members where possible.');
-    } else {
-      hide('rc-overWarning');
-    }
+    // $80k cap note (replaces the old separate card)
+    var capRem = 80000 - s.totalCPFRelief;
+    var capNote = $('r-capNote');
+    capNote.innerHTML = 'Your CPF reliefs use <strong>' + fmt(s.totalCPFRelief) + '</strong> of the $80,000 personal relief cap. <strong>' + fmt(capRem) + '</strong> remaining.<br><span style="font-size:0.76rem;color:var(--text-muted);">Remember to account for other reliefs (Earned Income, Spouse, NSman, etc.) against the $80,000 cap.</span>';
 
-    // Build steps
     buildSteps(s);
-    buildSummaryPara(s);
   }
 
-  function makeStep(num, title, desc, calc, result, warn) {
+  // ── Chevron SVG ───────────────────────────────────────────────────────────
+  var chevronSVG = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="4,6 8,10 12,6"/></svg>';
+
+  function makeStep(num, title, resultText, desc, calc, warn, pills) {
+    var pillsHtml = '';
+    if (pills && pills.length) {
+      pills.forEach(function (p) {
+        pillsHtml += ' <span class="pill ' + p.cls + '">' + p.text + '</span>';
+      });
+    }
     var w = warn ? '<div class="step-warn">' + warn + '</div>' : '';
     var c = calc ? '<div class="step-calc">' + calc + '</div>' : '';
-    var r = result ? '<div class="step-result">→ ' + result + '</div>' : '';
-    return '<div class="step"><div class="step-num">' + num + '</div><div class="step-body"><div class="step-title">' + title + '</div><div class="step-desc">' + desc + '</div>' + c + r + w + '</div></div>';
+    var r = resultText ? '<div class="step-result-inline">→ ' + resultText + '</div>' : '';
+    return '<div class="step">' +
+      '<div class="step-header">' +
+        '<div class="step-num">' + num + '</div>' +
+        '<div class="step-summary">' +
+          '<div class="step-title">' + title + pillsHtml + '</div>' +
+          r +
+        '</div>' +
+        '<div class="step-chevron">' + chevronSVG + '</div>' +
+      '</div>' +
+      '<div class="step-detail">' +
+        '<div class="step-desc">' + desc + '</div>' +
+        c + w +
+      '</div>' +
+    '</div>';
   }
 
   function buildSteps(s) {
     var html = '';
     var stepN = 1;
 
-    // ── EMPLOYEE steps ──
+    // ── EMPLOYEE ──
     if (s.isEmp) {
       if (s.empDetail && s.empDetail.override) {
         html += makeStep(stepN++,
-          'Employee CPF Relief (manual entry)',
-          'You entered your actual total CPF contributions directly, overriding the computed amount.',
-          'Actual employee CPF deducted: ' + fmt(s.empDetail.raw) + '\nCapped at Annual Limit ($37,740): ' + fmt(s.empCPF),
-          'Employee CPF Relief = ' + fmt(s.empCPF)
+          'Employee CPF Relief (manual)',
+          'Employee CPF Relief = ' + fmt(s.empCPF),
+          'You entered your actual total CPF contributions directly.',
+          'Actual employee CPF: ' + fmt(s.empDetail.raw) + '\nCapped at Annual Limit ($37,740): ' + fmt(s.empCPF),
+          null, null
         );
       } else if (s.empDetail) {
         var d = s.empDetail;
-        var owLine = 'OW ceiling: $7,400/month\nMonthly OW entered: ' + fmt(val('empOW')) + '\nCapped OW: ' + fmt(d.owCapped) + '/month × 12 = ' + fmt(d.owAnnual);
-        var awLine = 'AW ceiling: $102,000 − ' + fmt(d.owAnnual) + ' = ' + fmt(d.awCeiling) + '\nAW entered: ' + fmt(val('empAW')) + '\nCapped AW: ' + fmt(d.awCapped);
-        var totalLine = 'Total wages subject to CPF: ' + fmt(d.owAnnual) + ' + ' + fmt(d.awCapped) + ' = ' + fmt(d.owAnnual + d.awCapped);
-        var rateLine = 'Employee contribution rate (age ' + s.age + '): ' + fmtPct(d.rate);
-        var rawLine  = 'Employee CPF: ' + fmt(d.owAnnual + d.awCapped) + ' × ' + fmtPct(d.rate) + ' = ' + fmt((d.owAnnual + d.awCapped) * d.rate);
-        var capLine  = 'After pooled Annual Limit cap: ' + fmt(s.empCPF);
+        var pills = [];
+        if (s.empOW > OW_CEILING) pills.push({ text: 'OW ceiling applied', cls: 'pill-cap' });
+        if (s.empAW > d.awCeiling && d.awCeiling >= 0) pills.push({ text: 'AW ceiling applied', cls: 'pill-cap' });
+
+        var calc = 'Monthly OW: ' + fmt(s.empOW) + '  →  capped at $7,400: ' + fmt(d.owCapped) + '/month\n' +
+          'Annual OW: ' + fmt(d.owCapped) + ' × 12 = ' + fmt(d.owAnnual) + '\n\n' +
+          'AW ceiling: $102,000 − ' + fmt(d.owAnnual) + ' = ' + fmt(d.awCeiling) + '\n' +
+          'AW entered: ' + fmt(s.empAW) + '  →  capped: ' + fmt(d.awCapped) + '\n\n' +
+          'Total wages for CPF: ' + fmt(d.owAnnual) + ' + ' + fmt(d.awCapped) + ' = ' + fmt(d.owAnnual + d.awCapped) + '\n' +
+          'Employee rate (age ' + s.age + '): ' + fmtPct(d.rate) + '\n' +
+          fmt(d.owAnnual + d.awCapped) + ' × ' + fmtPct(d.rate) + ' = ' + fmt((d.owAnnual + d.awCapped) * d.rate) + '\n' +
+          'After pooled Annual Limit cap: ' + fmt(s.empCPF);
+
         html += makeStep(stepN++,
-          'Compute Compulsory Employee CPF',
-          'CPF Relief for employees is based on compulsory contributions on ordinary wages (OW) and additional wages (AW), calculated using the age-based employee contribution rate.',
-          owLine + '\n\n' + awLine + '\n\n' + totalLine + '\n' + rateLine + '\n' + rawLine + '\n' + capLine,
-          'Compulsory Employee CPF Relief = ' + fmt(s.empCPF),
-          d.rawCPF > CPF_ANNUAL_LIMIT ? 'The computed amount exceeded the $37,740 Annual Limit and has been reduced accordingly.' : null
+          'Compulsory Employee CPF',
+          'Employee CPF Relief = ' + fmt(s.empCPF),
+          'CPF Relief for employees is the compulsory employee share on ordinary wages (OW) and additional wages (AW), using the age-based contribution rate.',
+          calc,
+          d.rawCPF > CPF_ANNUAL_LIMIT ? 'Exceeded the $37,740 Annual Limit — reduced accordingly.' : null,
+          pills
         );
       }
     }
 
-    // ── SEP MediSave steps ──
+    // ── SEP ──
     if (s.isSEP && s.sepMAResult) {
       var maR = s.sepMAResult;
-      var ageGroup = s.age <= 34 ? 'Below 35' : s.age <= 44 ? '35 to 44' : s.age <= 49 ? '45 to 49' : '50 and above';
-      var maCalc = 'NTI: ' + fmt(s.nti) + '\nAge group: ' + ageGroup + '\nFormula: ' + maR.desc + '\nCompulsory MediSave payable: ' + fmt(maR.amount);
+      var ageGroup = s.age <= 34 ? 'Below 35' : s.age <= 44 ? '35–44' : s.age <= 49 ? '45–49' : '50+';
+      var calc = 'NTI: ' + fmt(s.nti) + '\nAge group: ' + ageGroup + '\n' + maR.desc + '\nCompulsory MediSave: ' + fmt(maR.amount);
       html += makeStep(stepN++,
-        'Compute Compulsory MediSave (SEP)',
-        'Self-employed persons with NTI exceeding $6,000 are required to make compulsory MediSave contributions. From YA 2026, the full amount qualifies for tax relief with no upper cap.',
-        maCalc,
+        'Compulsory MediSave (SEP)',
         'SEP MediSave Relief = ' + fmt(s.sepMA),
-        s.nti <= 6000 ? 'NTI does not exceed $6,000 — no compulsory MediSave contribution is required.' : null
+        'Self-employed persons with NTI > $6,000 must make compulsory MediSave contributions. From YA 2026, the full amount qualifies for relief.',
+        calc,
+        s.nti <= 6000 && s.nti > 0 ? 'NTI ≤ $6,000 — no compulsory MediSave required.' : null,
+        null
       );
     }
 
-    // ── Platform Worker steps ──
+    // ── PLATFORM WORKER ──
     if (s.isPW) {
       if (s.pwOptedIn && s.pwDetail) {
         var pwR = s.pwDetail;
-        var cappedEarnings = Math.min(s.pwNetEarnings, 102000);
-        var pwCalc = 'Annual net platform earnings: ' + fmt(s.pwNetEarnings) + '\nCapped at $102,000: ' + fmt(cappedEarnings) + '\n2025 worker share rate (age ' + s.age + '): ' + fmtPct(pwR.rate) + '\nWorker share CPF: ' + fmt(cappedEarnings) + ' × ' + fmtPct(pwR.rate) + ' = ' + fmt(pwR.amount);
+        var capped = Math.min(s.pwNetEarnings, 102000);
+        var calc = 'Net platform earnings: ' + fmt(s.pwNetEarnings) + '\nCapped at $102,000: ' + fmt(capped) + '\n' +
+          '2025 worker rate (age ' + s.age + '): ' + fmtPct(pwR.rate) + '\n' +
+          fmt(capped) + ' × ' + fmtPct(pwR.rate) + ' = ' + fmt(pwR.amount);
         html += makeStep(stepN++,
-          'Compute Platform Worker CPF (opted-in / mandatory)',
-          'Platform workers who are mandatory contributors or have opted in contribute to their Ordinary, Special/Retirement, and MediSave Accounts. Only the worker\'s own share qualifies for CPF Relief — the platform operator\'s contributions are not taxable income.',
-          pwCalc,
-          'Platform Worker CPF Relief = ' + fmt(s.pwCPF),
-          s.pwNetEarnings <= 6000 ? 'Annual net earnings do not exceed $6,000 — no worker share CPF contribution applies.' : null
+          'Platform Worker CPF (worker share)',
+          'PW CPF Relief = ' + fmt(s.pwCPF),
+          'Mandatory or opted-in platform workers contribute to OA, SA, and MA. Only the worker share qualifies for relief.',
+          calc,
+          s.pwNetEarnings <= 6000 ? 'Net earnings ≤ $6,000 — no worker share CPF applies.' : null,
+          null
         );
       } else if (!s.pwOptedIn && s.pwMADetail) {
         html += makeStep(stepN++,
-          'Compute MediSave (non-opted-in Platform Worker)',
-          'Platform workers born before 1995 who have not opted in are required to contribute to MediSave only. The contribution is computed on net platform earnings using the same rates that apply to self-employed persons.',
-          'Net platform earnings: ' + fmt(s.pwMANetEarnings) + '\n' + s.pwMADetail.desc + '\nCompulsory MediSave: ' + fmt(s.pwMADetail.amount),
-          'Platform Worker MediSave Relief = ' + fmt(s.pwMA)
+          'MediSave (non-opted-in PW)',
+          'PW MediSave Relief = ' + fmt(s.pwMA),
+          'Non-opted-in platform workers contribute to MediSave only, at SEP rates.',
+          'Net platform earnings: ' + fmt(s.pwMANetEarnings) + '\n' + s.pwMADetail.desc + '\nMediSave: ' + fmt(s.pwMADetail.amount),
+          null, null
         );
       }
     }
 
-    // ── Annual Limit check step ──
+    // ── ANNUAL LIMIT ──
     var compTotal = s.empCPF + s.sepMA + s.pwCPF + s.pwMA;
     var wasPoolCapped = (s.empDetail && !s.empDetail.override && (s.empDetail.rawCPF + s.sepMA + s.pwCPF + s.pwMA) > CPF_ANNUAL_LIMIT);
+    var limitPills = [];
+    if (compTotal >= CPF_ANNUAL_LIMIT) limitPills.push({ text: 'Limit reached', cls: 'pill-warn' });
+    else limitPills.push({ text: fmt(37740 - compTotal) + ' headroom', cls: 'pill-ok' });
+
     html += makeStep(stepN++,
-      'Check CPF Annual Limit ($37,740)',
-      'The $37,740 Annual Limit applies to all compulsory and voluntary CPF contributions combined. Where pooled compulsory contributions exceed the limit, SEP MediSave takes precedence and the employee CPF amount is reduced.',
-      'Employee CPF (before pooled cap): ' + fmt(s.empDetail && !s.empDetail.override ? s.empDetail.rawCPF : s.empCPF) +
+      'Annual Limit ($37,740)',
+      compTotal >= 37740 ? 'Fully used — no voluntary relief available' : 'Headroom = ' + fmt(37740 - compTotal),
+      'The $37,740 Annual Limit covers all compulsory and voluntary CPF. SEP MediSave takes priority; employee CPF is reduced if needed.',
+      'Employee CPF (before cap): ' + fmt(s.empDetail && !s.empDetail.override ? s.empDetail.rawCPF : s.empCPF) +
       '\nSEP MediSave: ' + fmt(s.sepMA) +
-      '\nPlatform Worker CPF / MediSave: ' + fmt(s.pwCPF + s.pwMA) +
-      '\nTotal compulsory (after Annual Limit cap): ' + fmt(compTotal) +
-      '\nAnnual Limit: $37,740' +
-      '\nRemaining headroom for voluntary contributions: ' + fmt(Math.max(0, 37740 - compTotal)),
-      compTotal >= 37740 ? 'The Annual Limit is fully used. No voluntary CPF relief is available.' : 'Annual Limit headroom = ' + fmt(37740 - compTotal),
-      wasPoolCapped ? 'Employee CPF has been reduced because the combined compulsory contributions exceeded $37,740. SEP MediSave contributions take precedence.' : null
+      '\nPW CPF / MediSave: ' + fmt(s.pwCPF + s.pwMA) +
+      '\nTotal compulsory (capped): ' + fmt(compTotal) +
+      '\nRemaining for voluntary: ' + fmt(Math.max(0, 37740 - compTotal)),
+      wasPoolCapped ? 'Employee CPF reduced — combined compulsory exceeded $37,740. SEP MediSave takes priority.' : null,
+      limitPills
     );
 
-    // ── Voluntary CPF step ──
+    // ── VOLUNTARY ──
     if (s.isEmp && !s.isSEP && !s.isPW) {
       html += makeStep(stepN++,
-        'Voluntary CPF Contributions (Employee)',
-        'Employees cannot claim CPF Relief on voluntary contributions to their OA or SA. From 1 January 2022, voluntary MediSave top-ups are instead claimed under CPF Cash Top-up Relief — see the RSTU section below.',
-        'Voluntary CPF Relief (employee): $0',
-        'Not applicable for employees.'
+        'Voluntary CPF (Employee)',
+        'Not applicable',
+        'Employees cannot claim CPF Relief on voluntary OA/SA contributions from 1 Jan 2022. Voluntary MediSave top-ups are claimed under RSTU.',
+        null, null, null
       );
-    } else if (val('volCPF') > 0 || s.volCPF > 0) {
+    } else if (s.volCPFRaw > 0 || s.volCPF > 0) {
       var sepNTI = s.nti;
       var totalMA = s.sepMA + s.pwMA;
       var capAVal = (s.isSEP && sepNTI > 0) ? Math.max(0, 0.37 * sepNTI - totalMA) : CPF_ANNUAL_LIMIT;
       var capBVal = Math.max(0, 37740 - compTotal);
-      var capCVal = val('volCPF');
+      var capCVal = s.volCPFRaw;
+      var bindingVal = Math.min(capAVal, capBVal, capCVal);
+      var bindingName = '';
+      if (bindingVal === capAVal && s.isSEP && sepNTI > 0) bindingName = '37% of NTI minus MediSave';
+      else if (bindingVal === capBVal) bindingName = 'Annual Limit headroom';
+      else bindingName = 'Actual contribution';
+
+      var volPills = [];
+      if (s.volCPF < capCVal) volPills.push({ text: bindingName + ' binding', cls: 'pill-cap' });
+      else volPills.push({ text: 'Full amount', cls: 'pill-ok' });
+
       var capADesc = (s.isSEP && sepNTI > 0)
-        ? 'Cap A (37% × NTI − compulsory MediSave): ' + fmt(capAVal)
-        : 'Cap A (37% of NTI): not applicable — no trade income declared';
+        ? 'Cap A: 37% × ' + fmt(sepNTI) + ' − ' + fmt(totalMA) + ' = ' + fmt(capAVal)
+        : 'Cap A: N/A (no trade income)';
       html += makeStep(stepN++,
         'Voluntary CPF Relief',
-        'For self-employed persons, the relief is the lowest of: (A) 37% of NTI minus compulsory MediSave contributions; (B) the remaining Annual Limit headroom; and (C) the actual amount contributed. For opted-in platform workers with no trade income, only caps B and C apply.',
-        capADesc + '\nCap B (Annual Limit headroom): ' + fmt(capBVal) + '\nCap C (actual contribution): ' + fmt(capCVal) + '\nBinding cap: ' + fmt(Math.min(capAVal, capBVal, capCVal)),
-        'Voluntary CPF Relief = ' + fmt(s.volCPF),
-        s.volCPF < capCVal ? 'The voluntary contribution has been partially restricted. Binding cap = ' + fmt(Math.min(capAVal, capBVal)) : null
+        'Voluntary Relief = ' + fmt(s.volCPF),
+        'For SEPs: lowest of (A) 37% of NTI minus compulsory MediSave, (B) Annual Limit headroom, (C) actual contribution. For opted-in PWs without trade income, only B and C apply.',
+        capADesc + '\nCap B: Annual Limit headroom = ' + fmt(capBVal) + '\nCap C: Actual contributed = ' + fmt(capCVal) + '\nBinding: ' + fmt(bindingVal) + ' (' + bindingName + ')',
+        s.volCPF < capCVal ? 'Voluntary contribution partially restricted by ' + bindingName + '.' : null,
+        volPills
       );
     }
 
-    // ── RSTU top-up step ──
-    if (val('topupSelf') > 0 || val('topupFamily') > 0) {
-      var selfRaw = Math.min(val('topupSelf'), 8000);
-      var famRaw  = Math.min(val('topupFamily'), 8000);
+    // ── RSTU ──
+    if (s.topupSelfRaw > 0 || s.topupFamRaw > 0) {
+      var selfRaw = Math.min(s.topupSelfRaw, 8000);
+      var famRaw  = Math.min(s.topupFamRaw, 8000);
       html += makeStep(stepN++,
-        'CPF Cash Top-up Relief (RSTU)',
-        'Cash top-ups under the Retirement Sum Topping-Up Scheme attract a separate relief of up to $16,000 per year, which does not count toward the CPF Annual Limit. From YA 2026, top-up amounts matched under the MRSS or MMSS do not qualify for this relief.',
-        'Own SA/RA top-up (capped at $8,000): ' + fmt(selfRaw) + '\n  Less MRSS-matched amount: −' + fmt(s.selfMRSSAmt) + '\n  Net relief — self: ' + fmt(s.topupSelf) + '\n\nFamily SA/RA/MA top-up (capped at $8,000): ' + fmt(famRaw) + '\n  Less MRSS/MMSS-matched amount: −' + fmt(s.famMRSSAmt) + '\n  Net relief — family: ' + fmt(s.topupFam),
-        'CPF Cash Top-up Relief = ' + fmt(s.topupTotal)
+        'Cash Top-up Relief (RSTU)',
+        'RSTU Relief = ' + fmt(s.topupTotal),
+        'Cash top-ups under RSTU get up to $16,000 relief ($8,000 self + $8,000 family). Does not count toward the CPF Annual Limit. From YA 2026, MRSS/MMSS-matched amounts are excluded.',
+        'Own top-up (capped at $8,000): ' + fmt(selfRaw) + '\n  Less MRSS: −' + fmt(s.selfMRSSAmt) + '\n  Net: ' + fmt(s.topupSelf) + '\n\n' +
+        'Family top-up (capped at $8,000): ' + fmt(famRaw) + '\n  Less MRSS/MMSS: −' + fmt(s.famMRSSAmt) + '\n  Net: ' + fmt(s.topupFam),
+        null, null
       );
     }
 
-    // ── Total step ──
+    // ── TOTAL ──
     html += makeStep(stepN++,
-      'Total CPF-related Relief',
-      'The sum of all CPF relief components below forms part of your overall $80,000 personal income tax relief cap.',
-      'Compulsory CPF / MediSave relief:  ' + fmt(s.compulsoryRelief) + '\nVoluntary CPF relief:               ' + fmt(s.volCPF) + '\nCPF Cash Top-up Relief (RSTU):      ' + fmt(s.topupTotal) + '\n────────────────────────────────────\nTotal:                              ' + fmt(s.totalCPFRelief),
-      'Total CPF Relief (YA 2026) = ' + fmt(s.totalCPFRelief)
+      'Total CPF Relief',
+      'Total = ' + fmt(s.totalCPFRelief),
+      'Sum of all CPF relief components. This forms part of your $80,000 personal relief cap.',
+      'Compulsory CPF / MediSave:  ' + fmt(s.compulsoryRelief) + '\nVoluntary CPF:              ' + fmt(s.volCPF) + '\nRSTU Cash Top-up:           ' + fmt(s.topupTotal) + '\n──────────────────────────\nTotal CPF Relief (YA 2026): ' + fmt(s.totalCPFRelief),
+      null, null
     );
 
     $('stepsContainer').innerHTML = html;
   }
 
-  function buildSummaryPara(s) {
-    var lines = [];
-    var types = [];
-    if (s.isEmp) types.push('an employee');
-    if (s.isSEP) types.push('a self-employed person (SEP)');
-    if (s.isPW)  types.push('a platform worker');
-    var typeStr = types.length === 0 ? 'a worker'
-                : types.length === 1 ? types[0]
-                : types.slice(0, -1).join(', ') + ' and ' + types[types.length - 1];
-    lines.push('You are ' + typeStr + ', aged ' + s.age + ' as at 31 December 2025.');
-
-    if (s.isEmp && s.empCPF > 0) {
-      lines.push('Your compulsory employee CPF contributions, after applying the Annual Limit, amount to ' + fmt(s.empCPF) + ', which qualifies for CPF Relief.');
-    }
-    if (s.isSEP && s.sepMA > 0) {
-      lines.push('Your compulsory MediSave contributions as a self-employed person amount to ' + fmt(s.sepMA) + '. From YA 2026, the full amount qualifies for tax relief with no upper cap.');
-    } else if (s.isSEP && s.nti <= 6000 && s.nti > 0) {
-      lines.push('Your NTI of ' + fmt(s.nti) + ' does not exceed $6,000, so no compulsory MediSave contribution is required and no SEP MediSave relief applies.');
-    }
-    if (s.isPW && s.pwOptedIn && s.pwCPF > 0) {
-      lines.push('As a ' + (s.isPW1995 ? 'mandatory' : 'opted-in') + ' platform worker, your worker share of CPF contributions is ' + fmt(s.pwCPF) + ' at the 2025 phased-in contribution rate. Only your own share qualifies for CPF Relief — the platform operator\'s contributions are not taxable income.');
-    } else if (s.isPW && !s.pwOptedIn && s.pwMA > 0) {
-      lines.push('As a non-opted-in platform worker, you are required to contribute to MediSave only, amounting to ' + fmt(s.pwMA) + '.');
-    }
-    if (s.volCPF > 0) {
-      lines.push(fmt(s.volCPF) + ' of your voluntary CPF contributions of ' + fmt(s.volCPFRaw) + ' qualifies for relief after applying the relevant caps.');
-    }
-    if (s.topupTotal > 0) {
-      lines.push('Your CPF cash top-ups under the RSTU scheme add ' + fmt(s.topupTotal) + ' in relief, which is separate from the CPF Annual Limit.');
-    }
-    var totalAll = s.totalCPFRelief + s.otherReliefs;
-    var capRem = 80000 - totalAll;
-    if (capRem < 0) {
-      lines.push('Your total CPF-related relief is ' + fmt(s.totalCPFRelief) + '. Combined with other reliefs of ' + fmt(s.otherReliefs) + ', the aggregate of ' + fmt(totalAll) + ' exceeds the $80,000 personal income tax relief cap — a portion of the relief will be disallowed.');
-    } else {
-      lines.push('Your total CPF-related relief for YA 2026 is ' + fmt(s.totalCPFRelief) + ', leaving ' + fmt(capRem) + ' of the $80,000 personal relief cap available for other reliefs.');
-    }
-    $('summaryPara').textContent = lines.join(' ');
-  }
-
   // ── Init ──────────────────────────────────────────────────────────────────
+  // Delegated click handler for collapsible steps (avoids inline JS)
+  $('stepsContainer').addEventListener('click', function (e) {
+    var header = e.target.closest('.step-header');
+    if (header) {
+      header.parentElement.classList.toggle('open');
+    }
+  });
+
   applyWorkerType();
   applyPWOptIn();
   recalc();
